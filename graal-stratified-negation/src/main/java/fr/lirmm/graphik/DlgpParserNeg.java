@@ -1,7 +1,6 @@
 package fr.lirmm.graphik;
 
 import java.util.List;
-import java.util.LinkedList;
 
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
