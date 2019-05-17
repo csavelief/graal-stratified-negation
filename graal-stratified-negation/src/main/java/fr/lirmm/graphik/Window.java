@@ -111,21 +111,13 @@ public class Window extends JFrame {
 		fileMenu.setMaximumSize(new Dimension(120, 30));
 		fileMenu.setVisible(true);
 		chooser = new JMenuItem("Open");
-		chooser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				openFile();
-			}
-		});
+		chooser.addActionListener(e -> openFile());
 		fileMenu.add(chooser);
 		
 		
 		quit = new JMenuItem("Quit");
 		quit.setMaximumSize(new Dimension(120, 30));
-		quit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				fermer();
-			}
-		});
+		quit.addActionListener(e -> fermer());
 		quit.setVisible(true);
 		fileMenu.add(quit);
 		menu.add(fileMenu);
@@ -138,54 +130,30 @@ public class Window extends JFrame {
 		toolMenu.setVisible(true);
 		rulesText = new JMenuItem("Print Rules");
 
-		rulesText.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				printRules();
-			}
-		});
+		rulesText.addActionListener(e -> printRules());
 
 		toolMenu.add(rulesText);
 		
 		grdText = new JMenuItem("Print GRD");
-		grdText.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				printGRD();
-			}
-		});
+		grdText.addActionListener(e -> printGRD());
 		toolMenu.add(grdText);
 
 		grdVisu = new JMenuItem("Display GRD");
-		grdVisu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				displayGRD();
-			}
-		});
+		grdVisu.addActionListener(e -> displayGRD());
 		toolMenu.add(grdVisu);
 
 		sccText = new JMenuItem("Print SCC");
-		sccText.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				printSCC();
-			}
-		});
+		sccText.addActionListener(e -> printSCC());
 		toolMenu.add(sccText);
 
 		sccVisu = new JMenuItem("Display SCC");
-		sccVisu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				displaySCC();
-			}
-		});
+		sccVisu.addActionListener(e -> displaySCC());
 		toolMenu.add(sccVisu);
 		
 		forwardChaining = new JMenu("Forward Chaining");
 		
 		fcFromFile = new JMenuItem("From file");
-		fcFromFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				launchForwardChainingFromFile();
-			}
-		});
+		fcFromFile.addActionListener(e -> launchForwardChainingFromFile());
 		forwardChaining.add(fcFromFile);
 		/*
 		fcFromDB = new JMenuItem("From DataBase");
@@ -211,35 +179,19 @@ public class Window extends JFrame {
 		saveMenu.setVisible(true);
 
 		saveRules = new JMenuItem("Save Rules");
-		saveRules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportRules();
-			}
-		});
+		saveRules.addActionListener(e -> exportRules());
 		saveMenu.add(saveRules);
 
 		saveGRD = new JMenuItem("Save GRD");
-		saveGRD.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportGRD();		
-			}
-		});
+		saveGRD.addActionListener(e -> exportGRD());
 		saveMenu.add(saveGRD);
 
 		saveSCC = new JMenuItem("Save SCC Graph");
-		saveSCC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportSCC();		
-			}
-		});
+		saveSCC.addActionListener(e -> exportSCC());
 		saveMenu.add(saveSCC);
 		
 		saveFC = new JMenuItem("Save Forward Chaining");
-		saveFC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportFC();		
-			}
-		});
+		saveFC.addActionListener(e -> exportFC());
 		saveMenu.add(saveFC);
 		
 		saveMenu.insert("-----", 1);
@@ -460,25 +412,23 @@ public class Window extends JFrame {
 				}
 			});
 
-			((JPanel)this.view).addMouseWheelListener(new MouseWheelListener() {
-				public void mouseWheelMoved(MouseWheelEvent e) {
-					if(e.getWheelRotation() < 0)
-					{
-						System.out.println("wheel up");
+			((JPanel)this.view).addMouseWheelListener(e -> {
+				if(e.getWheelRotation() < 0)
+				{
+					System.out.println("wheel up");
 
-						double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
-						cX = e.getPoint().getX() / view.getCamera().getMetrics().ratioPx2Gu;
-						System.out.println("ancien : " + view.getCamera().getViewCenter().toString());
-						double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
-						cY = e.getPoint().getY() / view.getCamera().getMetrics().ratioPx2Gu;
-						double cZ = view.getCamera().getViewCenter().z;
-						view.getCamera().setViewCenter(cX , cY , cZ);
-						System.out.println("nouveau : " + view.getCamera().getViewCenter().toString());
-					}
-					else if(e.getWheelRotation() > 0)
-						System.out.println("wheel down");
-
+					double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
+					cX = e.getPoint().getX() / view.getCamera().getMetrics().ratioPx2Gu;
+					System.out.println("ancien : " + view.getCamera().getViewCenter().toString());
+					double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
+					cY = e.getPoint().getY() / view.getCamera().getMetrics().ratioPx2Gu;
+					double cZ = view.getCamera().getViewCenter().z;
+					view.getCamera().setViewCenter(cX , cY , cZ);
+					System.out.println("nouveau : " + view.getCamera().getViewCenter().toString());
 				}
+				else if(e.getWheelRotation() > 0)
+					System.out.println("wheel down");
+
 			});
 
 			add((Component) this.view , BorderLayout.CENTER);
@@ -604,25 +554,23 @@ public class Window extends JFrame {
 				}
 			});
 
-			((JPanel)this.view).addMouseWheelListener(new MouseWheelListener() {
-				public void mouseWheelMoved(MouseWheelEvent e) {
-					if(e.getWheelRotation() < 0)
-					{
-						System.out.println("wheel up");
+			((JPanel)this.view).addMouseWheelListener(e -> {
+				if(e.getWheelRotation() < 0)
+				{
+					System.out.println("wheel up");
 
-						double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
-						cX = e.getPoint().getX() / view.getCamera().getMetrics().ratioPx2Gu;
-						System.out.println("ancien : " + view.getCamera().getViewCenter().toString());
-						double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
-						cY = e.getPoint().getY() / view.getCamera().getMetrics().ratioPx2Gu;
-						double cZ = view.getCamera().getViewCenter().z;
-						view.getCamera().setViewCenter(cX , cY , cZ);
-						System.out.println("nouveau : " + view.getCamera().getViewCenter().toString());
-					}
-					else if(e.getWheelRotation() > 0)
-						System.out.println("wheel down");
-
+					double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
+					cX = e.getPoint().getX() / view.getCamera().getMetrics().ratioPx2Gu;
+					System.out.println("ancien : " + view.getCamera().getViewCenter().toString());
+					double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
+					cY = e.getPoint().getY() / view.getCamera().getMetrics().ratioPx2Gu;
+					double cZ = view.getCamera().getViewCenter().z;
+					view.getCamera().setViewCenter(cX , cY , cZ);
+					System.out.println("nouveau : " + view.getCamera().getViewCenter().toString());
 				}
+				else if(e.getWheelRotation() > 0)
+					System.out.println("wheel down");
+
 			});
 
 			add((Component) this.view , BorderLayout.CENTER);
