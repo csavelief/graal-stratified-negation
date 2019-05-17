@@ -8,31 +8,21 @@
 	<version>1.3.0-SNAPSHOT</version>
 	<name>graal-stratified-negation</name>
 	<url>http://maven.apache.org</url>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
+		<graal.version>1.3.1</graal.version>
 	</properties>
+
 	<dependencies>
+
+		<!-- Misc. -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.lirmm.graphik</groupId>
-			<artifactId>graal-core</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>fr.lirmm.graphik</groupId>
-			<artifactId>graal-kb</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>fr.lirmm.graphik</groupId>
-			<artifactId>graal-io-dlgp</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jgrapht</groupId>
@@ -44,7 +34,6 @@
 			<artifactId>jgrapht-ext</artifactId>
 			<version>0.9.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.graphstream</groupId>
 			<artifactId>gs-core</artifactId>
@@ -65,16 +54,32 @@
 			<artifactId>jcommander</artifactId>
 			<version>1.72</version>
 		</dependency>
+
+		<!-- Graal -->
 		<dependency>
 			<groupId>fr.lirmm.graphik</groupId>
-			<artifactId>graal-store-api</artifactId>
-			<version>0.9.0</version>
+			<artifactId>graal-core</artifactId>
+			<version>${graal.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.lirmm.graphik</groupId>
-			<artifactId>graal-store-rdbms</artifactId>
-			<version>1.2.0</version>
-			<type>pom</type>
+			<artifactId>graal-kb</artifactId>
+			<version>${graal.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.lirmm.graphik</groupId>
+			<artifactId>graal-io-dlgp</artifactId>
+			<version>${graal.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.lirmm.graphik</groupId>
+			<artifactId>graal-rules-analyser</artifactId>
+			<version>${graal.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.lirmm.graphik</groupId>
+			<artifactId>graal-forward-chaining</artifactId>
+			<version>${graal.version}</version>
 		</dependency>
 	</dependencies>
 

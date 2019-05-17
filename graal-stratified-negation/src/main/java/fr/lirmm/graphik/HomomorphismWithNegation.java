@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import fr.lirmm.graphik.graal.api.homomorphism.HomomorphismException;
 import fr.lirmm.graphik.graal.api.homomorphism.HomomorphismWithCompilation;
+import fr.lirmm.graphik.graal.homomorphism.SmartHomomorphism;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
-import fr.lirmm.graphik.graal.homomorphism.StaticHomomorphism;
 import fr.lirmm.graphik.graal.core.atomset.LinkedListAtomSet;
 import fr.lirmm.graphik.graal.core.DefaultConjunctiveQuery;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
@@ -88,7 +88,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 
 	public boolean exist(Object q, AtomSet a) throws HomomorphismException {
 		try {
-			CloseableIterator<Substitution> l = StaticHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);
+			CloseableIterator<Substitution> l = SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);
 			
 			for( ; l.hasNext() ; )
 			{
@@ -119,7 +119,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 		ArrayList<Substitution> liste = new ArrayList<Substitution>();
 		
 		try {
-			CloseableIterator<Substitution> l =StaticHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);
+			CloseableIterator<Substitution> l =SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);
 			
 			for( ; l.hasNext() ; )
 			{
