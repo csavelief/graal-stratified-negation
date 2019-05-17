@@ -295,13 +295,12 @@ public class Window extends JFrame {
 
 	public static String getRulesText(Iterable<Rule> rules)
 	{
-		StringBuffer s = new StringBuffer("====== RULE SET ======\n");
+		StringBuilder s = new StringBuilder("====== RULE SET ======\n");
 		for(Rule r : rules)
 		{
 			s.append(r.toString());
 			s.append('\n');
 		}
-
 		return s.toString();
 	}
 
@@ -324,8 +323,7 @@ public class Window extends JFrame {
 
 	public static String getGRDText(DefaultLabeledGraphOfRuleDependencies grd)
 	{
-		StringBuffer s = new StringBuffer("======== GRD =========\n");
-
+		StringBuilder s = new StringBuilder("======== GRD =========\n");
 		for(Rule r1 : grd.getRules())
 		{
 			for(Rule r2 : grd.getTriggeredRules(r1))
@@ -345,7 +343,6 @@ public class Window extends JFrame {
 				s.append("]\n");
 			}
 		}
-
 		return s.toString();
 	}
 
@@ -439,8 +436,7 @@ public class Window extends JFrame {
 
 	public static String getSCCText(StronglyConnectedComponentsGraph<Rule> scc)
 	{
-		StringBuffer s = new StringBuffer("======== SCC =========\n");
-
+		StringBuilder s = new StringBuilder("======== SCC =========\n");
 		for(int i = 0 ; i < scc.getNbrComponents() ; i++)
 		{
 			boolean first = true;
@@ -455,18 +451,15 @@ public class Window extends JFrame {
 			}
 			s.append("}\n");
 		}
-
 		return s.toString();
 	}
 
 	public static String getGSCCText(Graph sccDisp)
 	{
-		StringBuffer s = new StringBuffer("======== SCC GRAPH =========\n");
-
+		StringBuilder s = new StringBuilder("======== SCC GRAPH =========\n");
 		for(Iterator<Node> itNode = sccDisp.getNodeIterator() ; itNode.hasNext() ;)
 		{
 			Node n = itNode.next();
-
 			for(Iterator<Edge> itEdge = n.getEachLeavingEdge().iterator() ; itEdge.hasNext() ; )
 			{
 				Edge e = itEdge.next();
@@ -480,9 +473,7 @@ public class Window extends JFrame {
 				s.append(e.getTargetNode().getId());
 				s.append("\n");
 			}
-
 		}
-
 		return s.toString();
 	}
 
