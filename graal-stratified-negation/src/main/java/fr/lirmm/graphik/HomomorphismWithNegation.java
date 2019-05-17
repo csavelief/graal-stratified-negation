@@ -86,7 +86,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 	}
 
 
-	public boolean exist(Object q, AtomSet a) throws HomomorphismException {
+	public boolean exist(Object q, AtomSet a) {
 		try {
 			CloseableIterator<Substitution> l = SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);
 			
@@ -112,8 +112,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 	}
 
 
-	public CloseableIterator<Substitution> execute(Object q, AtomSet a)
-			throws HomomorphismException {
+	public CloseableIterator<Substitution> execute(Object q, AtomSet a) {
 		
 		
 		ArrayList<Substitution> liste = new ArrayList<>();
