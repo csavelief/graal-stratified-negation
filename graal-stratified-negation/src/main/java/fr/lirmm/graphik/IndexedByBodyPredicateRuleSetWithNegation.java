@@ -40,7 +40,7 @@ public class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet
 	public Iterable<Rule> getRulesByBodyPredicate(Predicate predicate) {
 		Iterable<Rule> res = this.map.get(predicate);
 		if (res == null) {
-			res = Collections.<Rule> emptyList();
+			res = Collections.emptyList();
 		}
 		return res;
 	}
