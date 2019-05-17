@@ -26,9 +26,9 @@ import org.jgrapht.DirectedGraph;
 
 class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
-	private DirectedGraph<Rule, DefaultDirectedLabeledEdge> graph;
+	private final DirectedGraph<Rule, DefaultDirectedLabeledEdge> graph;
 
-	private Iterable<Rule> rules;
+	private final Iterable<Rule> rules;
 
 	private boolean computeCircuits;
 	private List<List<Rule>> circuits;

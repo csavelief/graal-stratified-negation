@@ -4,9 +4,9 @@ import fr.lirmm.graphik.util.graph.DirectedEdge;
 
 class DefaultDirectedLabeledEdge implements DirectedEdge {
 
-	private int tail;
-	private int head;
-	private char label;
+	private final int tail;
+	private final int head;
+	private final char label;
 	
 	
 	// /////////////////////////////////////////////////////////////////////////

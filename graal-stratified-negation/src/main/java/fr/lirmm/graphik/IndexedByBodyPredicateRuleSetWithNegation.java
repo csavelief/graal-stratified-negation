@@ -14,7 +14,7 @@ import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
 class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet{
 
-	private TreeMap<Predicate, RuleSet> map;
+	private final TreeMap<Predicate, RuleSet> map;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTORS

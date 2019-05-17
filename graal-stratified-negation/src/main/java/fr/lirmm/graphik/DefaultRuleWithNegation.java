@@ -10,7 +10,7 @@ import fr.lirmm.graphik.graal.api.core.Atom;
 
 public class DefaultRuleWithNegation extends DefaultRule implements RuleWithNegation {
 
-	private InMemoryAtomSet negativeBody;
+	private final InMemoryAtomSet negativeBody;
 	private int indice;
 	
 	

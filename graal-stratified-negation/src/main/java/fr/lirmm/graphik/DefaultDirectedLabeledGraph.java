@@ -8,7 +8,7 @@ import fr.lirmm.graphik.graal.api.core.Rule;
 @Deprecated
 public class DefaultDirectedLabeledGraph<V,E> implements DirectedLabeledGraph{
 
-	private ArrayList<ArrayList<Pair<Integer, Character>>> adjacencyList;
+	private final ArrayList<ArrayList<Pair<Integer, Character>>> adjacencyList;
 	private int nbVertices;
 	
 	public DefaultDirectedLabeledGraph(Iterable<Rule> rules) {

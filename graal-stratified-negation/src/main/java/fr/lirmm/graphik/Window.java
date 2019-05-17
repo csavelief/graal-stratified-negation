@@ -49,31 +49,31 @@ import fr.lirmm.graphik.util.graph.scc.StronglyConnectedComponentsGraph;
 class Window extends JFrame {
 	private static final long serialVersionUID = -4228059556541657661L;
 
-	private JMenuBar menu;
-	private JMenu fileMenu;
-	private JMenuItem chooser;
-	private JMenuItem quit;
-	private JMenu toolMenu;
-	private JMenuItem rulesText;
-	private JMenuItem grdText;
-	private JMenuItem grdVisu;
-	private JMenuItem sccText;
-	private JMenuItem sccVisu;
-	private JMenu forwardChaining;
-	private JMenuItem fcFromFile;
+	private final JMenuBar menu;
+	private final JMenu fileMenu;
+	private final JMenuItem chooser;
+	private final JMenuItem quit;
+	private final JMenu toolMenu;
+	private final JMenuItem rulesText;
+	private final JMenuItem grdText;
+	private final JMenuItem grdVisu;
+	private final JMenuItem sccText;
+	private final JMenuItem sccVisu;
+	private final JMenu forwardChaining;
+	private final JMenuItem fcFromFile;
 	JMenuItem fcFromDB;
-	private JMenu saveMenu;
-	private JMenuItem saveRules;
-	private JMenuItem saveGRD;
-	private JMenuItem saveSCC;
-	private JMenuItem saveFC;
+	private final JMenu saveMenu;
+	private final JMenuItem saveRules;
+	private final JMenuItem saveGRD;
+	private final JMenuItem saveSCC;
+	private final JMenuItem saveFC;
 
 	private View view;
 	private JScrollPane scroll;
-	private JTextArea displayZone;
+	private final JTextArea displayZone;
 
-	private JToolBar info;
-	private JLabel infoNode;
+	private final JToolBar info;
+	private final JLabel infoNode;
 
 	private DefaultLabeledGraphOfRuleDependencies grd;
 	private Graph grdDisp;
@@ -83,7 +83,7 @@ class Window extends JFrame {
 	private Graph sccDisp;
 	
 
-	private boolean master;
+	private final boolean master;
 
 	public Window(boolean master)
 	{

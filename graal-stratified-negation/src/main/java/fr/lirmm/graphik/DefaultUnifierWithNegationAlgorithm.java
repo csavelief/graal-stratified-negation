@@ -17,7 +17,7 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 public class DefaultUnifierWithNegationAlgorithm {
 		
 		private static DefaultUnifierWithNegationAlgorithm instance;
-		private UnifierChecker tab[] = {};
+		private final UnifierChecker[] tab = {};
 		
 
 		// /////////////////////////////////////////////////////////////////////////
