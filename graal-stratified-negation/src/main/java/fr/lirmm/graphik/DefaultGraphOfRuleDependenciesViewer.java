@@ -196,7 +196,7 @@ public class DefaultGraphOfRuleDependenciesViewer {
 					{
 						if(s.contains(dest) && graphDisp.getEdge(edgeID) == null && i != j)
 						{
-							Edge e = graphDisp.addEdge(edgeID.toString(),
+							Edge e = graphDisp.addEdge(edgeID,
 									"C" + i,
 									"C" + j,
 									true
@@ -210,7 +210,7 @@ public class DefaultGraphOfRuleDependenciesViewer {
 					{
 						if(s.contains(dest) && graphDisp.getEdge(edgeID) == null && i != j)
 						{
-							Edge e = graphDisp.addEdge(edgeID.toString(),
+							Edge e = graphDisp.addEdge(edgeID,
 									"C" + i,
 									"C" + j,
 									true
