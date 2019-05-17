@@ -30,10 +30,7 @@ public class Utils {
 		{
 			System.out.println("Rules : parsing of '" + fileRules + "'");
 			try {
-				InputStream ips = null;
-
-				ips = new FileInputStream(fileRules);
-				
+				InputStream ips = new FileInputStream(fileRules);
 				InputStreamReader ipsr = new InputStreamReader(ips);
 				BufferedReader br = new BufferedReader(ipsr);
 				String ligne;
@@ -60,7 +57,7 @@ public class Utils {
 		{
 			System.out.println("Facts : parsing of '" + fileFacts + "'");
 			try {
-				InputStream ips = null;
+				InputStream ips;
 
 				ips = new FileInputStream(fileFacts);
 				InputStreamReader ipsr = new InputStreamReader(ips);

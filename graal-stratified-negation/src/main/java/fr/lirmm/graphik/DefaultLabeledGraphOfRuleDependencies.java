@@ -348,10 +348,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 		
 		/* Parsing Rules */
 		try {
-			InputStream ips = null;
-			
-			ips = new FileInputStream(src);
-			
+			InputStream ips = new FileInputStream(src);
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			BufferedReader br = new BufferedReader(ipsr);
 			String ligne;

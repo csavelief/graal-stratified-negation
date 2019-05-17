@@ -53,11 +53,8 @@ public static ConjunctiveQueryWithNegation parseQuery(String s) throws ParseExce
 		
 		LinkedListAtomSet posBody = new LinkedListAtomSet() ;
 		LinkedListAtomSet negBody = new LinkedListAtomSet();
-		List<Term>  ans     = new LinkedList<Term>();
-		
 		ConjunctiveQuery q = DlgpParser.parseQuery(s);
-		
-		ans = q.getAnswerVariables();
+		List<Term>  ans = q.getAnswerVariables();
 		
 		for(Predicate itPred : q.getAtomSet().getPredicates())
 		{
