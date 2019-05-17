@@ -31,11 +31,6 @@ public class DefaultDirectedLabeledGraph<V,E> implements DirectedLabeledGraph{
 		return this.adjacencyList.get(v);
 	}
 
-	public ArrayList<Pair<Integer, Character>> getEdges(int src)
-	{
-		return adjacencyList.get(src);
-	}
-
 	public void add(DefaultDirectedLabeledEdge e) {
 		this.addEdge(e.getTail(), e.getHead(), e.getLabel());
 		

@@ -10,17 +10,7 @@ class Pair<L,R> {
 		this.first = first;
 		this.last = last;
 	}
-	
-	public void setFirst(L f)
-	{
-		first = f;
-	}
-	
-	public void setLast(R l)
-	{
-		last = l;
-	}
-	
+
 	public L getFirst()
 	{
 		return first;

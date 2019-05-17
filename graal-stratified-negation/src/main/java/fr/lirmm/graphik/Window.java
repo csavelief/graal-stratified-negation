@@ -57,7 +57,6 @@ class Window extends JFrame {
 	private final JMenuItem sccVisu;
 	private final JMenu forwardChaining;
 	private final JMenuItem fcFromFile;
-	JMenuItem fcFromDB;
 	private final JMenu saveMenu;
 	private final JMenuItem saveRules;
 	private final JMenuItem saveGRD;

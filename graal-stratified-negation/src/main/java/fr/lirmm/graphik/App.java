@@ -80,7 +80,6 @@ class App {
 				System.out.println("STRATIFIABLE =====");
 
 				if (options.facts_filepath.compareTo("-") != 0) {
-					KBBuilder kbb = new KBBuilder();
 					String s = Window.getSaturationFromFile(options.facts_filepath, grd);
 					System.out.println(s);
 				}

@@ -23,25 +23,6 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	// CONSTRUCTOR
 	// /////////////////////////////////////////////////////////////////////////
 
-	
-	public DefaultConjunctiveQueryWithNegation() {
-		
-		this.positiveAtomSet = DefaultAtomSetFactory.instance().create();
-		this.negativeAtomSet = DefaultAtomSetFactory.instance().create();
-		this.responseVariables = new LinkedList<>();
-		this.label = "";
-	}
-	
-	
-	public DefaultConjunctiveQueryWithNegation(InMemoryAtomSet positiveAtomSet , InMemoryAtomSet negativeAtomSet) {
-		
-		this.positiveAtomSet = positiveAtomSet;
-		this.negativeAtomSet = negativeAtomSet;
-		this.responseVariables = new LinkedList<>(positiveAtomSet.getVariables()); // Condition de Safety ?
-		this.label = "";
-	}
-	
-	
 	public DefaultConjunctiveQueryWithNegation(InMemoryAtomSet positiveAtomSet, InMemoryAtomSet negagtiveAtomSet , List<Term> ans) {
 		this("", positiveAtomSet, negagtiveAtomSet, ans);
 	}
@@ -63,16 +44,6 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		this.responseVariables = ans;
 		this.label = label;
 	}
-
-	// copy constructor
-	public DefaultConjunctiveQueryWithNegation(ConjunctiveQueryWithNegation query) {
-		
-		this.positiveAtomSet = DefaultAtomSetFactory.instance().create(query.getPositiveAtomSet());
-		this.negativeAtomSet = DefaultAtomSetFactory.instance().create(query.getNegativeAtomSet());
-		this.responseVariables = new LinkedList<>(query.getAnswerVariables());
-		this.label = query.getLabel();
-	}
-	
 	
 	// /////////////////////////////////////////////////////////////////////////
 	// PUBLIC METHODS
@@ -94,12 +65,6 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	public InMemoryAtomSet getPositiveAtomSet() {
 		return this.positiveAtomSet;
 	}
-
-	
-	public void setPositiveAtomSet(InMemoryAtomSet positiveAtomSet) {
-		this.positiveAtomSet = positiveAtomSet;
-	}
-	
 	
 	/**
 	 * Returns the negative facts of the query.
@@ -107,12 +72,6 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	public InMemoryAtomSet getNegativeAtomSet() {
 		return this.negativeAtomSet;
 	}
-
-	
-	public void setNegativeAtomSet(InMemoryAtomSet negativeAtomSet) {
-		this.negativeAtomSet = negativeAtomSet;
-	}
-
 	
 	/**
 	 * Returns the answer variables of the query.

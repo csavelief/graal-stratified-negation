@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 @Deprecated
 public interface DirectedLabeledGraph {
+
 	int nbVertices();
 
 	ArrayList<Pair<Integer, Character>> adjacencyList(int v);

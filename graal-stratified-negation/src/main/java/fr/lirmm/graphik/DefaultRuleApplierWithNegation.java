@@ -11,16 +11,10 @@ import fr.lirmm.graphik.graal.forward_chaining.rule_applier.AbstractRuleApplier;
 
 class DefaultRuleApplierWithNegation<T extends AtomSet> extends AbstractRuleApplier<T> {
 
-	
-	public DefaultRuleApplierWithNegation(){
-		this(HomomorphismWithNegation.instance());
-	}
-
 	private DefaultRuleApplierWithNegation(Homomorphism<? super ConjunctiveQuery, ? super T> homomorphismSolver) {
 			super(homomorphismSolver);
 		}
-	
-	
+
 	@Override
 	protected ConjunctiveQuery generateQuery(Rule rule) {
 		LinkedList<Term> ans = new LinkedList<>(rule.getFrontier());
@@ -28,5 +22,4 @@ class DefaultRuleApplierWithNegation<T extends AtomSet> extends AbstractRuleAppl
 				((DefaultRuleWithNegation)rule).getNegativeBody() ,
 				ans);
 	}
-
 }

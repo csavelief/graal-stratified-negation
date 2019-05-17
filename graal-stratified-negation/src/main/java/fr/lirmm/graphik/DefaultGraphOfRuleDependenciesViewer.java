@@ -223,24 +223,4 @@ public class DefaultGraphOfRuleDependenciesViewer {
 			}
 		}
 	}
-	
-	
-	/********************/
-	/*** Fast Display ***/
-	/********************/
-	public void display(GraphOfRuleDependencies g)
-	{
-		Graph graphDisp = new SingleGraph("Graph Of Rules Dependencies");
-		computeVertices(g , graphDisp);
-		addDependencies(g , graphDisp);
-
-	    System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-	    
-	    graphDisp.addAttribute("ui.stylesheet", "url(file:styles.css)");
-		graphDisp.addAttribute("ui.quality");
-		graphDisp.addAttribute("ui.antialias");
-		graphDisp.display();			
-	}
-	
-	
 }

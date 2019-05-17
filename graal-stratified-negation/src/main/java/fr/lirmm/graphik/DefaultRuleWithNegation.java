@@ -12,19 +12,11 @@ public class DefaultRuleWithNegation extends DefaultRule implements RuleWithNega
 
 	private final InMemoryAtomSet negativeBody;
 	private int indice;
-	
-	
+
 	// /////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTORS
 	// /////////////////////////////////////////////////////////////////////////
-	
-	
-	public DefaultRuleWithNegation()
-	{
-		super();
-		this.negativeBody = new LinkedListAtomSet();
-	}
-	
+
 	public DefaultRuleWithNegation(String label, InMemoryAtomSet positiveBody, InMemoryAtomSet negativeBody, InMemoryAtomSet head) {
 		
 		super(label , positiveBody , head);
@@ -37,7 +29,6 @@ public class DefaultRuleWithNegation extends DefaultRule implements RuleWithNega
 			System.out.println("Error not a number : '" + getLabel() + "'");
 		}
 	}
-	
 	
 	// /////////////////////////////////////////////////////////////////////////
 	// PUBLIC METHODS

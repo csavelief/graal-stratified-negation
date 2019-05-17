@@ -44,38 +44,6 @@ class DlgpParserNeg {
 			}
 			itAtom.close();
 		}
-		
 		return new DefaultRuleWithNegation(i + "", posBody, negBody, r.getHead());
-	}
-	
-public static ConjunctiveQueryWithNegation parseQuery(String s) throws ParseException {
-		
-		LinkedListAtomSet posBody = new LinkedListAtomSet() ;
-		LinkedListAtomSet negBody = new LinkedListAtomSet();
-		ConjunctiveQuery q = DlgpParser.parseQuery(s);
-		List<Term>  ans = q.getAnswerVariables();
-		
-		for(Predicate itPred : q.getAtomSet().getPredicates())
-		{
-			
-			CloseableIteratorWithoutException<Atom> itAtom = q.getAtomSet().atomsByPredicate(itPred);
-			for( ; itAtom.hasNext() ; ) {
-				Atom a = itAtom.next();
-				
-				if(a.getPredicate().toString().startsWith("not_")){
-					
-					Predicate p = new Predicate(a.getPredicate().getIdentifier().toString().replaceAll("not_", "") , a.getPredicate().getArity());	
-					a.setPredicate(p);
-					negBody.add(a);
-				}
-				else {
-					
-					posBody.add(a);
-				}
-			}
-			itAtom.close();
-		}
-		
-		return new DefaultConjunctiveQueryWithNegation(posBody, negBody, ans);
 	}
 }
