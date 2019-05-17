@@ -223,12 +223,9 @@ public class DefaultUnifierWithNegationAlgorithm {
 			
 			return a1.removeAll(a2);
 		}
-		
-		
-		
-		/*********************************************************************/
-		/********************   A DEPLACER ***********************************/
-		/*********************************************************************/
+
+
+    /*********************************************************************/
 	
 		private DefaultRuleWithNegation createImageOf(DefaultRuleWithNegation rule , Substitution s)
 		{

@@ -23,10 +23,8 @@ public class DefaultGraphOfRuleDependenciesViewer {
 
 		return instance;
 	}
-	
-	/***********/
-	/*** GRD ***/
-	/***********/
+
+    /***********/
 	public Graph getGraph(GraphOfRuleDependencies g)
 	{
 		Graph graphDisp = new SingleGraph("Graph Of Rules Dependencies");
@@ -123,9 +121,8 @@ public class DefaultGraphOfRuleDependenciesViewer {
 			}
 		}
 	}
-	/***********/
-	/*** SCC ***/
-	/***********/
+
+    /***********/
 	public Graph getSCCGraph(GraphOfRuleDependencies graph) {
 		StronglyConnectedComponentsGraph<Rule> sccGraph = graph.getStronglyConnectedComponentsGraph();
 		Graph graphDisp = new SingleGraph("Graph of Strongly Connected Components");

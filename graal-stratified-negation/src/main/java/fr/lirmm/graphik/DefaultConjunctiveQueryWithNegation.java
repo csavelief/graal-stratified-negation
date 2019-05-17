@@ -32,7 +32,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	 * 
 	 * @param label
 	 *            the name of this query
-	 * @param atomSet
+	 * @param positiveAtomSet
 	 *            the conjunction of atom representing the query
 	 * @param ans
 	 *            the list of answer variables

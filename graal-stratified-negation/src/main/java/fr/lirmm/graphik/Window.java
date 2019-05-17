@@ -226,10 +226,6 @@ class Window extends JFrame {
 	}
 
 
-
-
-	/*************************************************/
-	/********** Methods relted to Listeners **********/
 	/*************************************************/
 
 	private void openFile()
