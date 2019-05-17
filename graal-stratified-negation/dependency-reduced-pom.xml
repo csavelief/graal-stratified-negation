@@ -39,7 +39,6 @@
             <arg>-Xep:Var:ERROR</arg>
             <arg>-Xep:WildcardImport</arg>
             <arg>-XepDisableWarningsInGeneratedCode</arg>
-            <arg>-XepExcludedPaths:.*/org/tartarus/snowball/ext/.*</arg>
           </compilerArgs>
           <forceJavacCompilerUse>true</forceJavacCompilerUse>
           <source>8</source>
