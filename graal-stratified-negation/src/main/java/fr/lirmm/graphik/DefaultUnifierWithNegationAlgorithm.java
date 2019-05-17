@@ -229,12 +229,10 @@ public class DefaultUnifierWithNegationAlgorithm {
 	
 		private DefaultRuleWithNegation createImageOf(DefaultRuleWithNegation rule , Substitution s)
 		{
-			DefaultRuleWithNegation substitut = new DefaultRuleWithNegation(
+			return new DefaultRuleWithNegation(
 					rule.getLabel() ,
 					s.createImageOf(rule.getBody()) ,
 					s.createImageOf(rule.getNegativeBody()) ,
 					s.createImageOf(rule.getHead()));
-			
-			return substitut;
 		}
 	}
