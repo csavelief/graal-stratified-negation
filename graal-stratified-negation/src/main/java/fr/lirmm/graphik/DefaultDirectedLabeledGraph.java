@@ -50,15 +50,16 @@ public class DefaultDirectedLabeledGraph<V,E> implements DirectedLabeledGraph{
 	
 	public String toString()
 	{
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		int i = 0;
-		
 		for(Iterator<ArrayList<Pair<Integer, Character>>> it = adjacencyList.iterator() ; it.hasNext() ; i++)
 		{
-			s += "R" + i + " : " + it.next().toString() + "\n";
+			s.append("R");
+			s.append(i);
+			s.append(" : ");
+			s.append(it.next().toString());
+			s.append("\n");
 		}
-		
-		return s;
+		return s.toString();
 	}
-
 }
