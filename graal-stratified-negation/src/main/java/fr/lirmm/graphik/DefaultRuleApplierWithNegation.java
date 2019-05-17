@@ -23,10 +23,7 @@ public class DefaultRuleApplierWithNegation<T extends AtomSet> extends AbstractR
 	
 	@Override
 	protected ConjunctiveQuery generateQuery(Rule rule) {
-		
-		LinkedList<Term> ans = new LinkedList<Term>();
-		ans.addAll(rule.getFrontier());
-		
+		LinkedList<Term> ans = new LinkedList<>(rule.getFrontier());
 		return new DefaultConjunctiveQueryWithNegation(rule.getBody() ,
 				((DefaultRuleWithNegation)rule).getNegativeBody() ,
 				ans);
