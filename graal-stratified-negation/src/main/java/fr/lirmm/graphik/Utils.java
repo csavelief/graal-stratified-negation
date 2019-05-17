@@ -13,6 +13,8 @@ import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 class Utils {
 	
 	public static KBBuilder readKB(KBBuilder kbb , String fileRules , String fileFacts) {
@@ -23,7 +25,7 @@ class Utils {
 			System.out.println("Rules : parsing of '" + fileRules + "'");
 			try {
 				InputStream ips = new FileInputStream(fileRules);
-				InputStreamReader ipsr = new InputStreamReader(ips);
+				InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
 				BufferedReader br = new BufferedReader(ipsr);
 				@Var String ligne;
 
@@ -50,7 +52,7 @@ class Utils {
 			System.out.println("Facts : parsing of '" + fileFacts + "'");
 			try {
 				InputStream ips = new FileInputStream(fileFacts);
-				InputStreamReader ipsr = new InputStreamReader(ips);
+				InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
 				BufferedReader br = new BufferedReader(ipsr);
 				@Var String ligne;
 

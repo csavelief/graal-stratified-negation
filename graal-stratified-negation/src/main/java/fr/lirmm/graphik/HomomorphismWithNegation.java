@@ -97,18 +97,13 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 			
 			l.close();
 			
-		} catch (HomomorphismException e) {
-			e.printStackTrace();
-		} catch (IteratorException e) {
-			e.printStackTrace();
-		} catch (AtomSetException e) {
+		} catch (HomomorphismException | IteratorException | AtomSetException e) {
 			e.printStackTrace();
 		}
-		
 		return false;
 	}
 
-
+	@Override
 	public CloseableIterator<Substitution> execute(Object q, AtomSet a) {
 		
 		
@@ -138,13 +133,10 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 		return new CloseableIteratorAdapter<>(liste.iterator());
 	}
 
-
+	@Override
 	public CloseableIterator<Substitution> execute(Object q, AtomSet a,
 			RulesCompilation compilation) {
 		
 		return execute(q , a);
 	}
-
-
-
 }

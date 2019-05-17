@@ -32,8 +32,8 @@ public class DefaultRuleWithNegation extends DefaultRule implements RuleWithNega
 	// /////////////////////////////////////////////////////////////////////////
 	// PUBLIC METHODS
 	// /////////////////////////////////////////////////////////////////////////
-	
-	
+
+	@Override
 	public InMemoryAtomSet getNegativeBody() {
 		return this.negativeBody;
 	}

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +22,7 @@ import org.jgrapht.alg.cycle.TarjanSimpleCycles;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.DirectedGraph;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
@@ -304,7 +304,7 @@ class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 		/* Parsing Rules */
 		try {
 			InputStream ips = new FileInputStream(src);
-			InputStreamReader ipsr = new InputStreamReader(ips);
+			InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
 			BufferedReader br = new BufferedReader(ipsr);
 			@Var String ligne;
 			

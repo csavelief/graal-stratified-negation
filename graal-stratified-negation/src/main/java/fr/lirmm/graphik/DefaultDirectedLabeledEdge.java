@@ -25,20 +25,23 @@ class DefaultDirectedLabeledEdge implements DirectedEdge {
 	// /////////////////////////////////////////////////////////////////////////
 	// PUBLIC METHODS
 	// /////////////////////////////////////////////////////////////////////////
-	
-	
+
+	@Override
 	public int getFirst() {
 		return this.getTail();
 	}
 
+	@Override
 	public int getSecond() {
 		return this.getHead();
 	}
 
+	@Override
 	public int getHead() {
 		return this.head;
 	}
 
+	@Override
 	public int getTail() {
 		return this.tail;
 	}
@@ -46,7 +49,8 @@ class DefaultDirectedLabeledEdge implements DirectedEdge {
 	public char getLabel() {
 		return this.label;
 	}
-	
+
+	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("(");
@@ -58,5 +62,4 @@ class DefaultDirectedLabeledEdge implements DirectedEdge {
 		s.append(")");
 		return s.toString();
 	}
-
 }

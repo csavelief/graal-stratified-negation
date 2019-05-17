@@ -123,7 +123,8 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		}
 		sb.append(") : ");
 		sb.append(this.positiveAtomSet);
-		sb.append(", !" + this.negativeAtomSet);
+		sb.append(", !");
+		sb.append(this.negativeAtomSet);
 	}
 
 	@Override
@@ -144,8 +145,8 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		       && this.getNegativeAtomSet().equals(other.getNegativeAtomSet());
 	}
 
+	@Override
 	public CloseableIteratorWithoutException<Atom> iterator() {
-		
 		return null;
 	}
 }

@@ -20,7 +20,8 @@ class Pair<L,R> {
 	{
 		return last;
 	}
-	
+
+	@Override
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder();
@@ -29,7 +30,6 @@ class Pair<L,R> {
 		s.append(",");
 		s.append(last);
 		s.append(">");
-		
 		return s.toString();
 	}
 }

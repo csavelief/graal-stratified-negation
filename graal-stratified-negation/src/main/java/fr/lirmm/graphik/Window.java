@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -42,6 +44,8 @@ import fr.lirmm.graphik.graal.api.kb.KnowledgeBase;
 import fr.lirmm.graphik.graal.forward_chaining.SccChase;
 import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.graph.scc.StronglyConnectedComponentsGraph;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 class Window extends JFrame {
 	private static final long serialVersionUID = -4228059556541657661L;
@@ -362,10 +366,20 @@ class Window extends JFrame {
 
 			this.view = this.viewer.addDefaultView(false);
 			this.view.addMouseListener(new MouseListener() {
+
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+
+				@Override
 				public void mousePressed(MouseEvent e) {}
+
+				@Override
 				public void mouseExited(MouseEvent e) {}
+
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					GraphicElement n = view.findNodeOrSpriteAt(e.getX(), e.getY()+menu.getMaximumSize().getHeight());
 					if(n != null)
@@ -415,7 +429,9 @@ class Window extends JFrame {
 		for(int i = 0 ; i < scc.getNbrComponents() ; i++)
 		{
 			@Var boolean first = true;
-			s.append("C" + i + " = {");
+			s.append("C");
+			s.append(i);
+			s.append(" = {");
 			for(Rule r : scc.getComponent(i))
 			{
 				if(first)
@@ -497,10 +513,20 @@ class Window extends JFrame {
 
 			this.view = this.viewer.addDefaultView(false);
 			this.view.addMouseListener(new MouseListener() {
+
+				@Override
 				public void mouseReleased(MouseEvent e) {}
+
+				@Override
 				public void mousePressed(MouseEvent e) {}
+
+				@Override
 				public void mouseExited(MouseEvent e) {}
+
+				@Override
 				public void mouseEntered(MouseEvent e) {}
+
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					
 					GraphicElement n = view.findNodeOrSpriteAt(e.getX(), e.getY()+menu.getMaximumSize().getHeight());
@@ -602,12 +628,9 @@ class Window extends JFrame {
 
 			if(returnVal == JFileChooser.APPROVE_OPTION)
 			{	
-				try {
-					FileWriter fw = new FileWriter(c.getSelectedFile());
+				try (Writer fw = Files.newBufferedWriter(c.getSelectedFile().toPath(), UTF_8)) {
 					fw.write(Window.getRulesText(grd.getRules()));
-					fw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -627,15 +650,11 @@ class Window extends JFrame {
 
 			if(returnVal == JFileChooser.APPROVE_OPTION)
 			{	
-				try {
-					FileWriter fw = new FileWriter(c.getSelectedFile());
+				try (Writer fw = Files.newBufferedWriter(c.getSelectedFile().toPath(), UTF_8)) {
 					fw.write(Window.getGRDText(grd));
-					fw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		}
 	}
@@ -656,13 +675,10 @@ class Window extends JFrame {
 
 			if(returnVal == JFileChooser.APPROVE_OPTION)
 			{	
-				try {
-					FileWriter fw = new FileWriter(c.getSelectedFile());
+				try (Writer fw = Files.newBufferedWriter(c.getSelectedFile().toPath(), UTF_8)) {
 					fw.write(Window.getSCCText(this.scc));
 					fw.write(Window.getGSCCText(this.sccDisp));
-					fw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -692,12 +708,9 @@ class Window extends JFrame {
 
 					if(returnVal == JFileChooser.APPROVE_OPTION)
 					{	
-						try {
-							FileWriter fw = new FileWriter(c.getSelectedFile());
+						try (Writer fw = Files.newBufferedWriter(c.getSelectedFile().toPath(), UTF_8)) {
 							fw.write(Window.getSaturationFromFile(c.getName(), grd));
-							fw.close();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
