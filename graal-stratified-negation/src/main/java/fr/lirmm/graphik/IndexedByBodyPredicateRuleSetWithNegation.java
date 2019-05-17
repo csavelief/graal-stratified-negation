@@ -2,7 +2,6 @@ package fr.lirmm.graphik;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.TreeMap;
 
 import fr.lirmm.graphik.graal.api.core.Atom;

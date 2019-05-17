@@ -22,20 +22,7 @@ public class DefaultDirectedLabeledGraph<V,E> implements DirectedLabeledGraph{
 			this.nbVertices++;
 		}
 	}
-	
-	public int nbVertices() {
-		return this.nbVertices;
-	}
 
-	public ArrayList<Pair<Integer, Character>> adjacencyList(int v) {
-		return this.adjacencyList.get(v);
-	}
-
-	public void add(DefaultDirectedLabeledEdge e) {
-		this.addEdge(e.getTail(), e.getHead(), e.getLabel());
-		
-	}
-	
 	public void addEdge(int tail, int head, char label) {
 		ArrayList<Pair<Integer, Character>> l = adjacencyList.get(tail);
 		l.add(new Pair<>(head, label));
