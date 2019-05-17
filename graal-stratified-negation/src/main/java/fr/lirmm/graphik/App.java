@@ -7,8 +7,6 @@ import org.graphstream.graph.Graph;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-import fr.lirmm.graphik.graal.kb.KBBuilder;
-
 class App {
 
 	private static final String PROGRAM_NAME = "graal-stratified-negation";
