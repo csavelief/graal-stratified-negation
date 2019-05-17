@@ -2,7 +2,6 @@ package fr.lirmm.graphik;
 
 import java.util.ArrayList;
 
-import com.google.errorprone.annotations.Var;
 import org.jgrapht.DirectedGraph;
 
 import fr.lirmm.graphik.graal.api.core.Rule;
