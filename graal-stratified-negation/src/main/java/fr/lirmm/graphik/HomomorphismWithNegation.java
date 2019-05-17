@@ -76,15 +76,13 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 		return true;
 	}
 
-	
-	
-
+	@Override
 	public boolean exist(Object q, AtomSet a, RulesCompilation compilation) {
 		
 		return exist(q , a);
 	}
 
-
+	@Override
 	public boolean exist(Object q, AtomSet a) {
 		try {
 			CloseableIterator<Substitution> l = SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);

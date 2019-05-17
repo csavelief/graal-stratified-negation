@@ -2,12 +2,12 @@ package fr.lirmm.graphik;
 
 import java.util.List;
 
+import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.graal.core.DefaultConjunctiveQuery;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.Term;
-
 
 public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery implements ConjunctiveQueryWithNegation {
 
@@ -15,8 +15,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	private final InMemoryAtomSet negativeAtomSet;
 	private List<Term> responseVariables;
 	private String label;
-	
-	
+
 	// /////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTOR
 	// /////////////////////////////////////////////////////////////////////////
@@ -24,7 +23,6 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	public DefaultConjunctiveQueryWithNegation(InMemoryAtomSet positiveAtomSet, InMemoryAtomSet negagtiveAtomSet , List<Term> ans) {
 		this("", positiveAtomSet, negagtiveAtomSet, ans);
 	}
-	
 
 	/**
 	 * 
@@ -36,7 +34,6 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	 *            the list of answer variables
 	 */
 	private DefaultConjunctiveQueryWithNegation(String label, InMemoryAtomSet positiveAtomSet, InMemoryAtomSet negativeAtomSet, List<Term> ans) {
-		
 		this.positiveAtomSet = positiveAtomSet;
 		this.negativeAtomSet = negativeAtomSet;
 		this.responseVariables = ans;
@@ -47,19 +44,20 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	// PUBLIC METHODS
 	// /////////////////////////////////////////////////////////////////////////
 
+	@Override
 	public String getLabel() {
 		return this.label;
 	}
 
-	
+	@Override
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	
 	/**
 	 * Returns the positive facts of the query.
 	 */
+	@Override
 	public InMemoryAtomSet getPositiveAtomSet() {
 		return this.positiveAtomSet;
 	}
@@ -67,6 +65,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	/**
 	 * Returns the negative facts of the query.
 	 */
+	@Override
 	public InMemoryAtomSet getNegativeAtomSet() {
 		return this.negativeAtomSet;
 	}
@@ -74,15 +73,17 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	/**
 	 * Returns the answer variables of the query.
 	 */
+	@Override
 	public List<Term> getAnswerVariables() {
 		return this.responseVariables;
 	}
 
-	
+	@Override
 	public void setAnswerVariables(List<Term> v) {
 		this.responseVariables = v;
 	}
 
+	@Override
 	public boolean isBoolean() {
 		return responseVariables.isEmpty();
 	}
@@ -92,11 +93,12 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	// OVERRIDE METHODS
 	// /////////////////////////////////////////////////////////////////////////
 
+	@Override
 	public CloseableIteratorWithoutException<Atom> positiveIterator() {
 		return getPositiveAtomSet().iterator();
 	}
 	
-	
+	@Override
 	public CloseableIteratorWithoutException<Atom> negativeIterator() {
 		return getNegativeAtomSet().iterator();
 	}
@@ -108,10 +110,10 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		return sb.toString();
 	}
 
-	
+	@Override
 	public void appendTo(StringBuilder sb) {
 		sb.append("ANS(");
-		boolean first = true;
+		@Var boolean first = true;
 		for (Term t : this.responseVariables) {
 			if(!first) {
 				sb.append(',');
@@ -119,28 +121,23 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 			first = false;
 			sb.append(t);
 		}
-
 		sb.append(") : ");
 		sb.append(this.positiveAtomSet);
 		sb.append(", !" + this.negativeAtomSet);
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
-		
 		if (!(obj instanceof ConjunctiveQueryWithNegation)) {
 			return false;
 		}
-		
 		ConjunctiveQueryWithNegation other = (ConjunctiveQueryWithNegation) obj;
-			return this.equals(other);
+		return this.equals(other);
 	}
 
-	
 	private boolean equals(ConjunctiveQueryWithNegation other) {
 		return this.getAnswerVariables().equals(other.getAnswerVariables())
 		       && this.getPositiveAtomSet().equals(other.getPositiveAtomSet())

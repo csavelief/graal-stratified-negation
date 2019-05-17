@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.google.errorprone.annotations.Var;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -388,10 +389,10 @@ class Window extends JFrame {
 				{
 					System.out.println("wheel up");
 
-					double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
+					@Var double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
 					cX = e.getPoint().getX() / view.getCamera().getMetrics().ratioPx2Gu;
 					System.out.println("ancien : " + view.getCamera().getViewCenter().toString());
-					double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
+					@Var double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
 					cY = e.getPoint().getY() / view.getCamera().getMetrics().ratioPx2Gu;
 					double cZ = view.getCamera().getViewCenter().z;
 					view.getCamera().setViewCenter(cX , cY , cZ);
@@ -413,7 +414,7 @@ class Window extends JFrame {
 		StringBuilder s = new StringBuilder("======== SCC =========\n");
 		for(int i = 0 ; i < scc.getNbrComponents() ; i++)
 		{
-			boolean first = true;
+			@Var boolean first = true;
 			s.append("C" + i + " = {");
 			for(Rule r : scc.getComponent(i))
 			{
@@ -524,10 +525,10 @@ class Window extends JFrame {
 				{
 					System.out.println("wheel up");
 
-					double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
+					@Var double cX = view.getCamera().getMetrics().lengthToGu(e.getPoint().getX() , Units.PX);
 					cX = e.getPoint().getX() / view.getCamera().getMetrics().ratioPx2Gu;
 					System.out.println("ancien : " + view.getCamera().getViewCenter().toString());
-					double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
+					@Var double cY = view.getCamera().getMetrics().lengthToGu(e.getPoint().getY() , Units.PX);
 					cY = e.getPoint().getY() / view.getCamera().getMetrics().ratioPx2Gu;
 					double cZ = view.getCamera().getViewCenter().z;
 					view.getCamera().setViewCenter(cX , cY , cZ);
@@ -677,11 +678,11 @@ class Window extends JFrame {
 			if(!this.grd.hasCircuitWithNegativeEdge())
 			{
 				/* Computation */
-				JFileChooser c = new JFileChooser(".");
+				@Var JFileChooser c = new JFileChooser(".");
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("DLGP files", "dlgp");
 				c.setFileFilter(filter);
 				c.setDialogTitle("Open a Facts Base");
-				int returnVal = c.showOpenDialog(this);
+				@Var int returnVal = c.showOpenDialog(this);
 
 				if(returnVal == JFileChooser.APPROVE_OPTION)
 				{	

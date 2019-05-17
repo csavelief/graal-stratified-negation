@@ -3,6 +3,7 @@ package fr.lirmm.graphik;
 import java.util.List;
 import java.util.Set;
 
+import com.google.errorprone.annotations.Var;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -153,8 +154,7 @@ public class DefaultGraphOfRuleDependenciesViewer {
 		
 		if(l != null)
 		{
-			boolean touch;
-			
+			@Var boolean touch;
 			for(int i = 0 ; i < sccGraph.getNbrComponents() ; i++)
 			{
 				touch = false;

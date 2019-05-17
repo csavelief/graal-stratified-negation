@@ -13,11 +13,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
 		<graal.version>1.3.1</graal.version>
+		<error-prone.version>2.3.1</error-prone.version>
+		<maven-shade-plugin.version>3.1.1</maven-shade-plugin.version>
 	</properties>
 
 	<dependencies>
 
 		<!-- Misc. -->
+		<dependency>
+			<groupId>com.google.errorprone</groupId>
+			<artifactId>error_prone_annotations</artifactId>
+			<version>${error-prone.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -84,14 +91,75 @@
 	</dependencies>
 
 	<build>
+		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<plugins>
+
+			<!-- Compile project using Google Error-Prone -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.3</version>
 				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
+					<compilerId>javac-with-errorprone</compilerId>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xep:ClassName</arg>
+						<arg>-Xep:DepAnn</arg>
+						<arg>-Xep:EmptyIf</arg>
+						<arg>-Xep:NoAllocation</arg>
+						<arg>-Xep:NumericEquality</arg>
+						<arg>-Xep:NonCanonicalStaticMemberImport</arg>
+						<arg>-Xep:PrimitiveArrayPassedToVarargsMethod</arg>
+						<arg>-Xep:StringEquality</arg>
+						<arg>-Xep:Var:ERROR</arg>
+						<arg>-Xep:WildcardImport</arg>
+						<arg>-XepDisableWarningsInGeneratedCode</arg>
+						<arg>-XepExcludedPaths:.*/org/tartarus/snowball/ext/.*</arg>
+					</compilerArgs>
+					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<!-- maven-compiler-plugin defaults to targeting Java 5, but our javac only supports >=6 -->
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-compiler-javac-errorprone</artifactId>
+						<version>2.8.3</version>
+					</dependency>
+					<!-- override plexus-compiler-javac-errorprone's dependency on Error Prone with the latest version -->
+					<dependency>
+						<groupId>com.google.errorprone</groupId>
+						<artifactId>error_prone_core</artifactId>
+						<version>${error-prone.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<!-- Build fat jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>${maven-shade-plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Unit tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<configuration>
+					<parallel>methods</parallel>
+					<threadCount>5</threadCount>
+					<skipTests>false</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>

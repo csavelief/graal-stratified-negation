@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.util.graph.scc.StronglyConnectedComponentsGraph;
 import fr.lirmm.graphik.graal.api.core.GraphOfRuleDependencies;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -93,9 +94,9 @@ class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 		ArrayList<ArrayList<Rule>> l = new ArrayList<>();
 		for(int i = 0 ; i < coeurs ; i++)
 			l.add(new ArrayList<>());
-		
-		
-		int k = 0;
+
+
+		@Var int k = 0;
 		for(Iterator<Rule> itRule = rules.iterator() ; itRule.hasNext() ; )
 		{
 			l.get(k).add(itRule.next());
@@ -351,7 +352,7 @@ class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 			InputStream ips = new FileInputStream(src);
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			BufferedReader br = new BufferedReader(ipsr);
-			String ligne;
+			@Var String ligne;
 			
 			while ((ligne = br.readLine()) != null) {
 				if(ligne.charAt(0) != '%')

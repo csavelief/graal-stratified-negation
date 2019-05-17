@@ -3,6 +3,7 @@ package fr.lirmm.graphik;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.graal.api.core.Rule;
 
 @Deprecated
@@ -18,10 +19,11 @@ public class DefaultDirectedLabeledGraph<V,E> {
 		}
 	}
 
+	@Override
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder();
-		int i = 0;
+		@Var int i = 0;
 		for(Iterator<ArrayList<Pair<Integer, Character>>> it = adjacencyList.iterator() ; it.hasNext() ; i++)
 		{
 			s.append("R");

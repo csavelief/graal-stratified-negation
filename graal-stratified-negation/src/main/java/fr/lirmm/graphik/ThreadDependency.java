@@ -2,6 +2,7 @@ package fr.lirmm.graphik;
 
 import java.util.ArrayList;
 
+import com.google.errorprone.annotations.Var;
 import org.jgrapht.DirectedGraph;
 
 import fr.lirmm.graphik.graal.api.core.Rule;
@@ -21,16 +22,13 @@ class ThreadDependency extends Thread{
 		this.graph = graph;
 		this.nbDep = 0;
 	}
-	
+
+	@Override
 	public void run()
 	{
-		
-		Iterable<Rule> candidates;
-			
 		for(Rule r1 : src)
-		{			
-			candidates = index.getRulesByPredicates(r1.getHead().getPredicates());
-				
+		{
+			Iterable<Rule> candidates = index.getRulesByPredicates(r1.getHead().getPredicates());
 			if(candidates != null)
 			{
 				for(Rule r2 : candidates)

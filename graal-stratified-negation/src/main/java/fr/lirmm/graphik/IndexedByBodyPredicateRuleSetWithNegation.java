@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
+import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.api.core.Rule;
@@ -56,12 +57,10 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet{
 
 	@Override
 	public boolean add(Rule rule) {
-		//super.add(rule);
-		CloseableIteratorWithoutException<Atom> it = rule.getBody().iterator();
+		@Var CloseableIteratorWithoutException<Atom> it = rule.getBody().iterator();
 		while (it.hasNext()) {
 			add(it.next().getPredicate(), rule);
 		}
-		
 		it = ((DefaultRuleWithNegation)rule).getNegativeBody().iterator();
 		while (it.hasNext()) {
 			add(it.next().getPredicate(), rule);
@@ -106,13 +105,14 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet{
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		boolean res = false;
+		@Var boolean res = false;
 		for (Object o : c) {
 			res = this.remove(o) || res;
 		}
 		return res;
 	}
 
+	@SuppressWarnings("ModifyingCollectionWithItself")
 	@Override
 	public boolean retainAll(Collection<?> c) {
 		boolean res = super.retainAll(c);
@@ -126,7 +126,7 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet{
 	// /////////////////////////////////////////////////////////////////////////
 
 	private void add(Predicate p, Rule r) {
-		RuleSet rules = this.map.get(p);
+		@Var RuleSet rules = this.map.get(p);
 		if (rules == null) {
 			rules = new LinkedListRuleSet();
 			this.map.put(p, rules);

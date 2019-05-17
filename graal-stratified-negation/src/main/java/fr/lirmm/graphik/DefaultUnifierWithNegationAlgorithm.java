@@ -1,6 +1,7 @@
 package fr.lirmm.graphik;
 
 
+import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -58,7 +59,7 @@ public class DefaultUnifierWithNegationAlgorithm {
 			LinkedListAtomSet r1Head = new LinkedListAtomSet();
 			//DefaultRuleWithNegation r1Bis = new DefaultRuleWithNegation(src.getLabel() , src.getBody() , src.getNegativeBody() , src.getHead());
 			
-			boolean add;
+			@Var boolean add;
 			try {
 				for(CloseableIterator<Atom> itAtom = src.getHead().iterator() ; itAtom.hasNext() ; )
 				{
@@ -138,7 +139,7 @@ public class DefaultUnifierWithNegationAlgorithm {
 			union.addAll(hi); // Atomic heads
 			union.addAll(bpi);
 			union.addAll(bpj);
-			boolean v = true;
+			@Var boolean v = true;
 			try {
 				for(CloseableIterator<Atom> itAtom = hj.iterator() ; itAtom.hasNext() ; )
 				{
@@ -154,8 +155,8 @@ public class DefaultUnifierWithNegationAlgorithm {
 			}
 			
 			boolean vi = !hasIntersection(bnj, hi);
-			
-			boolean vii = true;
+
+			@Var boolean vii = true;
 			try {
 				for(CloseableIterator<Atom> itAtom = bpj.iterator() ; itAtom.hasNext() ; )
 				{

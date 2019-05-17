@@ -2,6 +2,7 @@ package fr.lirmm.graphik;
 
 import java.io.File;
 
+import com.google.errorprone.annotations.Var;
 import org.graphstream.graph.Graph;
 
 import com.beust.jcommander.JCommander;
@@ -19,11 +20,10 @@ class App {
 		// new Window(true);
 
 		App options = new App();
-		JCommander commander = null;
+		@Var JCommander commander = null;
 		try {
 			commander = new JCommander(options, args);
 		} catch (com.beust.jcommander.ParameterException e) {
-
 			System.err.println(e.getMessage());
 			System.exit(1);
 		}

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.io.dlp.DlgpParser;
@@ -24,7 +25,7 @@ class Utils {
 				InputStream ips = new FileInputStream(fileRules);
 				InputStreamReader ipsr = new InputStreamReader(ips);
 				BufferedReader br = new BufferedReader(ipsr);
-				String ligne;
+				@Var String ligne;
 
 				while ((ligne = br.readLine()) != null) {
 					if(ligne.charAt(0) != '%')
@@ -48,12 +49,10 @@ class Utils {
 		{
 			System.out.println("Facts : parsing of '" + fileFacts + "'");
 			try {
-				InputStream ips;
-
-				ips = new FileInputStream(fileFacts);
+				InputStream ips = new FileInputStream(fileFacts);
 				InputStreamReader ipsr = new InputStreamReader(ips);
 				BufferedReader br = new BufferedReader(ipsr);
-				String ligne;
+				@Var String ligne;
 
 				while ((ligne = br.readLine()) != null){
 					if(ligne.charAt(0) != '%')
