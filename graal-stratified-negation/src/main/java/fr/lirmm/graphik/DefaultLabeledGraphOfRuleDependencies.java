@@ -145,7 +145,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 		
 		Set<Rule> set = new HashSet<Rule>();
 		
-		for(DefaultDirectedLabeledEdge i : this.graph.outgoingEdgesOf((DefaultRuleWithNegation)src)) {
+		for(DefaultDirectedLabeledEdge i : this.graph.outgoingEdgesOf(src)) {
 			if(i.getLabel() == '+')
 				set.add(this.graph.getEdgeTarget(i));
 		}
@@ -157,7 +157,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 	{
 		Set<Rule> set = new HashSet<Rule>();
 		
-		for(DefaultDirectedLabeledEdge i : this.graph.outgoingEdgesOf((DefaultRuleWithNegation)src)) {
+		for(DefaultDirectedLabeledEdge i : this.graph.outgoingEdgesOf(src)) {
 			if(i.getLabel() == '-')
 				set.add(this.graph.getEdgeTarget(i));
 		}
