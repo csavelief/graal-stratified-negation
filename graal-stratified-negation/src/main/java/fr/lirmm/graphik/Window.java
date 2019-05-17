@@ -435,12 +435,10 @@ class Window extends JFrame {
 		for(Iterator<Node> itNode = sccDisp.getNodeIterator() ; itNode.hasNext() ;)
 		{
 			Node n = itNode.next();
-			for(Iterator<Edge> itEdge = n.getEachLeavingEdge().iterator() ; itEdge.hasNext() ; )
-			{
-				Edge e = itEdge.next();
+			for (Edge e : n.getEachLeavingEdge()) {
 				s.append(n.getId());
 
-				if((char)e.getAttribute("label") == '+')
+				if ((char) e.getAttribute("label") == '+')
 					s.append(" =+=> ");
 				else
 					s.append(" =-=> ");
