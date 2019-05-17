@@ -1,7 +1,6 @@
 package fr.lirmm.graphik;
 
 import java.io.File;
-import java.util.Map;
 
 import org.graphstream.graph.Graph;
 
@@ -9,14 +8,11 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
 import fr.lirmm.graphik.graal.kb.KBBuilder;
-import fr.lirmm.graphik.graal.rulesetanalyser.RuleSetPropertyHierarchy;
-import fr.lirmm.graphik.graal.rulesetanalyser.property.RuleSetProperty;
 
 class App {
 
 	private static final String PROGRAM_NAME = "graal-stratified-negation";
 	private static final String VERSION = "1.0";
-	public static final Map<String, RuleSetProperty> propertyMap = RuleSetPropertyHierarchy.generatePropertyMap();
 
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
