@@ -94,33 +94,33 @@ class App {
 	}
 
 	@Parameter(names = { "-f", "--input-file" }, description = "Rule set input file.")
-	private final String input_filepath = "-";
+	private String input_filepath = "-";
 
 	@Parameter(names = { "-g", "--grd" }, description = "Print the Graph of Rule Dependencies.")
-	private final boolean print_grd = false;
+	private boolean print_grd = false;
 
 	@Parameter(names = { "-s", "--print-scc" }, description = "Print the Strongly Connected Components.")
-	private final boolean print_scc = false;
+	private boolean print_scc = false;
 
 	@Parameter(names = { "-G",
 			"--print-gscc" }, description = "Print the graph of the GRD Strongly Connected Components.")
-	private final boolean print_gscc = false;
+	private boolean print_gscc = false;
 
 	@Parameter(names = { "-r",
 			"--rule-set" }, description = "Print the rule set.")
-	private final boolean print_ruleset = false;
+	private boolean print_ruleset = false;
 
 	@Parameter(names = { "-c",
 			"--forward-chaining" }, description = "Apply forward chaining on the specified Fact Base.")
-	private final String facts_filepath = "-";
+	private String facts_filepath = "-";
 
 	@Parameter(names = { "-w", "--window" }, description = "Launch the GUI.")
-	private final boolean gui = false;
+	private boolean gui = false;
 
 	@Parameter(names = { "-h", "--help" }, description = "Print this message.")
-	private final boolean help = false;
+	private boolean help = false;
 
 	@Parameter(names = { "-v", "--version" }, description = "Print version information")
-	private final boolean version = false;
+	private boolean version = false;
 
 }
