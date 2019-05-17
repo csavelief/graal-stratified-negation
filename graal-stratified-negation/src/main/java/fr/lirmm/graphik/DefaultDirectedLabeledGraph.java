@@ -13,12 +13,12 @@ public class DefaultDirectedLabeledGraph<V,E> implements DirectedLabeledGraph{
 	
 	public DefaultDirectedLabeledGraph(Iterable<Rule> rules) {
 		
-		this.adjacencyList = new ArrayList<ArrayList<Pair<Integer, Character>>>();
+		this.adjacencyList = new ArrayList<>();
 		this.nbVertices = 0;
 		
 		for(Iterator<Rule> i = rules.iterator() ; i.hasNext() ; i.next())
 		{
-			this.adjacencyList.add(new ArrayList<Pair<Integer,Character>>());
+			this.adjacencyList.add(new ArrayList<>());
 			this.nbVertices++;
 		}
 	}
@@ -43,7 +43,7 @@ public class DefaultDirectedLabeledGraph<V,E> implements DirectedLabeledGraph{
 	
 	public void addEdge(int tail, int head, char label) {
 		ArrayList<Pair<Integer, Character>> l = adjacencyList.get(tail);
-		l.add(new Pair<Integer, Character>(head, label));
+		l.add(new Pair<>(head, label));
 		
 		adjacencyList.set(tail, l);
 	}

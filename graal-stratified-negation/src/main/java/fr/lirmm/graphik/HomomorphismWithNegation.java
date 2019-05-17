@@ -116,7 +116,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 			throws HomomorphismException {
 		
 		
-		ArrayList<Substitution> liste = new ArrayList<Substitution>();
+		ArrayList<Substitution> liste = new ArrayList<>();
 		
 		try {
 			CloseableIterator<Substitution> l =SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation)q).getPositiveAtomSet()), a);
@@ -139,7 +139,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 			e.printStackTrace();
 		}
 		
-		return new CloseableIteratorAdapter<Substitution>(liste.iterator());
+		return new CloseableIteratorAdapter<>(liste.iterator());
 	}
 
 

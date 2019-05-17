@@ -22,12 +22,12 @@ public class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet
 
 	public IndexedByBodyPredicateRuleSetWithNegation() {
 		super();
-		this.map = new TreeMap<Predicate, RuleSet>();
+		this.map = new TreeMap<>();
 	}
 
 	public IndexedByBodyPredicateRuleSetWithNegation(Iterable<Rule> rules) {
 		super();
-		this.map = new TreeMap<Predicate, RuleSet>();
+		this.map = new TreeMap<>();
 		for (Rule r : rules) {
 			this.add(r);
 		}
@@ -47,7 +47,7 @@ public class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet
 	
 	public Iterable<Rule> getRulesByPredicates(Iterable<Predicate> predicates)
 	{
-		ArrayList<Rule> res = new ArrayList<Rule>();
+		ArrayList<Rule> res = new ArrayList<>();
 		
 		for(Predicate p : predicates)
 		{

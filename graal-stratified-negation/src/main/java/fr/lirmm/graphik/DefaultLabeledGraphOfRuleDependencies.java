@@ -52,7 +52,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 	
 	public DefaultLabeledGraphOfRuleDependencies(Iterable<Rule> rules , boolean computeDep) {
 
-		this.graph = new DefaultDirectedGraph<Rule, DefaultDirectedLabeledEdge>(DefaultDirectedLabeledEdge.class);
+		this.graph = new DefaultDirectedGraph<>(DefaultDirectedLabeledEdge.class);
 				
 		this.rules = rules;
 		
@@ -90,9 +90,9 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 		int coeurs = Runtime.getRuntime().availableProcessors();
 		
 		
-		ArrayList<ArrayList<Rule>> l = new ArrayList<ArrayList<Rule>>();
+		ArrayList<ArrayList<Rule>> l = new ArrayList<>();
 		for(int i = 0 ; i < coeurs ; i++)
-			l.add(new ArrayList<Rule>());
+			l.add(new ArrayList<>());
 		
 		
 		int k = 0;
@@ -143,7 +143,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 	
 	public Set<Rule> getTriggeredRules(Rule src) {
 		
-		Set<Rule> set = new HashSet<Rule>();
+		Set<Rule> set = new HashSet<>();
 		
 		for(DefaultDirectedLabeledEdge i : this.graph.outgoingEdgesOf(src)) {
 			if(i.getLabel() == '+')
@@ -155,7 +155,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 	
 	public Set<Rule> getInhibitedRules(Rule src)
 	{
-		Set<Rule> set = new HashSet<Rule>();
+		Set<Rule> set = new HashSet<>();
 		
 		for(DefaultDirectedLabeledEdge i : this.graph.outgoingEdgesOf(src)) {
 			if(i.getLabel() == '-')
@@ -206,7 +206,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 	public StronglyConnectedComponentsGraph<Rule> getStronglyConnectedComponentsGraph() {
 		
 		if(!computeScc) {
-			Scc =  new StronglyConnectedComponentsGraph<Rule>(this.graph);
+			Scc = new StronglyConnectedComponentsGraph<>(this.graph);
 			
 			computeScc = true;
 		}

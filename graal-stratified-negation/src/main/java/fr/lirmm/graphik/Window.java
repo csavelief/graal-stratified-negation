@@ -586,7 +586,7 @@ public class Window extends JFrame {
 	
 		KnowledgeBase kb = kbb.build();
 		
-		SccChase<AtomSet> chase = new SccChase<AtomSet>(grd , kb.getFacts());
+		SccChase<AtomSet> chase = new SccChase<>(grd, kb.getFacts());
 		try {
 			chase.execute();
 		} catch (ChaseException e) {

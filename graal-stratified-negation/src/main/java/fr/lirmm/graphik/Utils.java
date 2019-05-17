@@ -84,8 +84,8 @@ public class Utils {
 	
 	public static LinkedListRuleSet compactRules(Iterator<Rule> iterator)
 	{	
-		HashMap<String, Pair<InMemoryAtomSet, InMemoryAtomSet>> mapBody = new HashMap<String, Pair<InMemoryAtomSet,InMemoryAtomSet>>();
-		HashMap<String, InMemoryAtomSet> mapHead = new HashMap<String, InMemoryAtomSet>();
+		HashMap<String, Pair<InMemoryAtomSet, InMemoryAtomSet>> mapBody = new HashMap<>();
+		HashMap<String, InMemoryAtomSet> mapHead = new HashMap<>();
 
 		StringBuilder sBody = new StringBuilder();
 
@@ -99,7 +99,7 @@ public class Utils {
 
 
 			if(mapBody.get(sBody.toString()) == null)
-				mapBody.put(sBody.toString() , new Pair<InMemoryAtomSet, InMemoryAtomSet>(r.getBody(), r.getNegativeBody()));
+				mapBody.put(sBody.toString() , new Pair<>(r.getBody(), r.getNegativeBody()));
 
 			InMemoryAtomSet h = mapHead.get(sBody.toString());
 			if(h != null)
@@ -168,7 +168,7 @@ public class Utils {
 
 	public static Collection<DefaultRuleWithNegation> decompose(Iterator<Rule> iterator)
 	{
-		Collection <DefaultRuleWithNegation> res = new LinkedList<DefaultRuleWithNegation>();
+		Collection <DefaultRuleWithNegation> res = new LinkedList<>();
 
 		for( ; iterator.hasNext() ;)
 		{

@@ -28,7 +28,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		
 		this.positiveAtomSet = DefaultAtomSetFactory.instance().create();
 		this.negativeAtomSet = DefaultAtomSetFactory.instance().create();
-		this.responseVariables = new LinkedList<Term>();
+		this.responseVariables = new LinkedList<>();
 		this.label = "";
 	}
 	
@@ -37,7 +37,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		
 		this.positiveAtomSet = positiveAtomSet;
 		this.negativeAtomSet = negativeAtomSet;
-		this.responseVariables = new LinkedList<Term>(positiveAtomSet.getVariables()); // Condition de Safety ?
+		this.responseVariables = new LinkedList<>(positiveAtomSet.getVariables()); // Condition de Safety ?
 		this.label = "";
 	}
 	
@@ -69,7 +69,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 		
 		this.positiveAtomSet = DefaultAtomSetFactory.instance().create(query.getPositiveAtomSet());
 		this.negativeAtomSet = DefaultAtomSetFactory.instance().create(query.getNegativeAtomSet());
-		this.responseVariables = new LinkedList<Term>(query.getAnswerVariables());
+		this.responseVariables = new LinkedList<>(query.getAnswerVariables());
 		this.label = query.getLabel();
 	}
 	
