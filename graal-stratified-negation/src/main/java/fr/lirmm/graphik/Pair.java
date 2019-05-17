@@ -1,6 +1,6 @@
 package fr.lirmm.graphik;
 
-public class Pair<L,R> {
+class Pair<L,R> {
 	
 	private L first;
 	private R last;

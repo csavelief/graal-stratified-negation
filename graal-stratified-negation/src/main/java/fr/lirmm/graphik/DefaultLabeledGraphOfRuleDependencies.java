@@ -24,7 +24,7 @@ import org.jgrapht.DirectedGraph;
 
 
 
-public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
+class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
 	private DirectedGraph<Rule, DefaultDirectedLabeledEdge> graph;
 
@@ -50,7 +50,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 		this(readRules(src) , true);
 	}
 	
-	public DefaultLabeledGraphOfRuleDependencies(Iterable<Rule> rules , boolean computeDep) {
+	private DefaultLabeledGraphOfRuleDependencies(Iterable<Rule> rules, boolean computeDep) {
 
 		this.graph = new DefaultDirectedGraph<>(DefaultDirectedLabeledEdge.class);
 				
@@ -190,7 +190,7 @@ public class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDepende
 	}
 	
 	
-	protected void addDependency(Rule src , Rule target , char label)
+	private void addDependency(Rule src, Rule target, char label)
 	{
 		graph.addEdge(src, target, new DefaultDirectedLabeledEdge(((DefaultRuleWithNegation) src).getIndice(),
                                 ((DefaultRuleWithNegation) target).getIndice(),

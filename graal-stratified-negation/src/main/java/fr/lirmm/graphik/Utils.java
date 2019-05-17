@@ -21,7 +21,7 @@ import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
-public class Utils {
+class Utils {
 	
 	public static KBBuilder readKB(KBBuilder kbb , String fileRules , String fileFacts) {
 

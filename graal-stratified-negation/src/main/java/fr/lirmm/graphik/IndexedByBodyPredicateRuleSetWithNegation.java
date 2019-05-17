@@ -12,9 +12,9 @@ import fr.lirmm.graphik.graal.api.core.RuleSet;
 import fr.lirmm.graphik.graal.core.ruleset.LinkedListRuleSet;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
-public class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet{
+class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet{
 
-	TreeMap<Predicate, RuleSet> map;
+	private TreeMap<Predicate, RuleSet> map;
 
 	// /////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTORS

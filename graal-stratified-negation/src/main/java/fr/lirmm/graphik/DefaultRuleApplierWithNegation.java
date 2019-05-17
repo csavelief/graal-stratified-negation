@@ -9,14 +9,14 @@ import fr.lirmm.graphik.graal.api.core.Term;
 import fr.lirmm.graphik.graal.api.homomorphism.Homomorphism;
 import fr.lirmm.graphik.graal.forward_chaining.rule_applier.AbstractRuleApplier;
 
-public class DefaultRuleApplierWithNegation<T extends AtomSet> extends AbstractRuleApplier<T> {
+class DefaultRuleApplierWithNegation<T extends AtomSet> extends AbstractRuleApplier<T> {
 
 	
 	public DefaultRuleApplierWithNegation(){
 		this(HomomorphismWithNegation.instance());
 	}
 
-	public DefaultRuleApplierWithNegation(Homomorphism<? super ConjunctiveQuery, ? super T> homomorphismSolver) {
+	private DefaultRuleApplierWithNegation(Homomorphism<? super ConjunctiveQuery, ? super T> homomorphismSolver) {
 			super(homomorphismSolver);
 		}
 	

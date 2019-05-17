@@ -30,7 +30,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 	// /////////////////////////////////////////////////////////////////////////
 		
 		
-	public HomomorphismWithNegation() {
+	private HomomorphismWithNegation() {
 	
 	}
 	

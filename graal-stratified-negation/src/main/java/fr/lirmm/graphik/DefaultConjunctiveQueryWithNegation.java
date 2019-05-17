@@ -56,7 +56,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	 * @param ans
 	 *            the list of answer variables
 	 */
-	public DefaultConjunctiveQueryWithNegation(String label, InMemoryAtomSet positiveAtomSet, InMemoryAtomSet negativeAtomSet, List<Term> ans) {
+	private DefaultConjunctiveQueryWithNegation(String label, InMemoryAtomSet positiveAtomSet, InMemoryAtomSet negativeAtomSet, List<Term> ans) {
 		
 		this.positiveAtomSet = positiveAtomSet;
 		this.negativeAtomSet = negativeAtomSet;
@@ -184,7 +184,7 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
 	}
 
 	
-	public boolean equals(ConjunctiveQueryWithNegation other) {
+	private boolean equals(ConjunctiveQueryWithNegation other) {
 		return this.getAnswerVariables().equals(other.getAnswerVariables())
 		       && this.getPositiveAtomSet().equals(other.getPositiveAtomSet())
 		       && this.getNegativeAtomSet().equals(other.getNegativeAtomSet());

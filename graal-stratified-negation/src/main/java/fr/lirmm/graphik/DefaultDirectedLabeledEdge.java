@@ -2,7 +2,7 @@
 
 import fr.lirmm.graphik.util.graph.DirectedEdge;
 
-public class DefaultDirectedLabeledEdge implements DirectedEdge {
+class DefaultDirectedLabeledEdge implements DirectedEdge {
 
 	private int tail;
 	private int head;

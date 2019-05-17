@@ -46,41 +46,41 @@ import fr.lirmm.graphik.graal.forward_chaining.SccChase;
 import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.graph.scc.StronglyConnectedComponentsGraph;
 
-public class Window extends JFrame {
+class Window extends JFrame {
 	private static final long serialVersionUID = -4228059556541657661L;
 
-	JMenuBar menu;
-	JMenu fileMenu;
-	JMenuItem chooser;
-	JMenuItem quit;
-	JMenu toolMenu;
-	JMenuItem rulesText; 
-	JMenuItem grdText;
-	JMenuItem grdVisu;
-	JMenuItem sccText;
-	JMenuItem sccVisu;
-	JMenu forwardChaining;
-	JMenuItem fcFromFile;
+	private JMenuBar menu;
+	private JMenu fileMenu;
+	private JMenuItem chooser;
+	private JMenuItem quit;
+	private JMenu toolMenu;
+	private JMenuItem rulesText;
+	private JMenuItem grdText;
+	private JMenuItem grdVisu;
+	private JMenuItem sccText;
+	private JMenuItem sccVisu;
+	private JMenu forwardChaining;
+	private JMenuItem fcFromFile;
 	JMenuItem fcFromDB;
-	JMenu saveMenu;
-	JMenuItem saveRules;
-	JMenuItem saveGRD;
-	JMenuItem saveSCC;
-	JMenuItem saveFC;
+	private JMenu saveMenu;
+	private JMenuItem saveRules;
+	private JMenuItem saveGRD;
+	private JMenuItem saveSCC;
+	private JMenuItem saveFC;
 
-	View view;
-	JScrollPane scroll;
-	JTextArea displayZone;
+	private View view;
+	private JScrollPane scroll;
+	private JTextArea displayZone;
 
-	JToolBar info;
-	JLabel infoNode;
+	private JToolBar info;
+	private JLabel infoNode;
 
-	DefaultLabeledGraphOfRuleDependencies grd;
-	Graph grdDisp;
-	Viewer viewer;
+	private DefaultLabeledGraphOfRuleDependencies grd;
+	private Graph grdDisp;
+	private Viewer viewer;
 
-	StronglyConnectedComponentsGraph<Rule> scc;
-	Graph sccDisp;
+	private StronglyConnectedComponentsGraph<Rule> scc;
+	private Graph sccDisp;
 	
 
 	private boolean master;
@@ -232,7 +232,7 @@ public class Window extends JFrame {
 		this.displayZone = new JTextArea();
 	}
 
-	public Window(GraphOfRuleDependencies graphOfRuleDependencies , boolean master)
+	private Window(GraphOfRuleDependencies graphOfRuleDependencies, boolean master)
 	{
 		/* Initialize the Window */
 		this(master);
@@ -254,7 +254,7 @@ public class Window extends JFrame {
 	/********** Methods relted to Listeners **********/
 	/*************************************************/
 
-	public void openFile()
+	private void openFile()
 	{
 		JFileChooser c = new JFileChooser(".");
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("DLGP files", "dlgp");
@@ -285,7 +285,7 @@ public class Window extends JFrame {
 	}
 
 
-	public void fermer()
+	private void fermer()
 	{
 		dispose();
 		if(master)
@@ -304,7 +304,7 @@ public class Window extends JFrame {
 		return s.toString();
 	}
 
-	public void printRules()
+	private void printRules()
 	{
 		if(this.grd != null)
 		{
@@ -346,7 +346,7 @@ public class Window extends JFrame {
 		return s.toString();
 	}
 
-	public void printGRD()
+	private void printGRD()
 	{
 		if(this.grd != null)
 		{
@@ -366,7 +366,7 @@ public class Window extends JFrame {
 		}
 	}
 
-	public void displayGRD()
+	private void displayGRD()
 	{
 		if(this.grd != null)
 		{
@@ -477,7 +477,7 @@ public class Window extends JFrame {
 		return s.toString();
 	}
 
-	public void printSCC()
+	private void printSCC()
 	{
 		System.out.println(Window.getSCCText(this.scc));
 		if(this.grd != null)
@@ -502,7 +502,7 @@ public class Window extends JFrame {
 	}
 
 
-	public void displaySCC()
+	private void displaySCC()
 	{
 		if(this.grd != null)
 		{
@@ -588,7 +588,7 @@ public class Window extends JFrame {
 		return Utils.displayFacts(kb.getFacts());
 	}
 	
-	public void launchForwardChainingFromFile()
+	private void launchForwardChainingFromFile()
 	{
 		if(this.grd != null)
 		{
@@ -617,7 +617,7 @@ public class Window extends JFrame {
 		}
 	}	
 	
-	public void exportRules()
+	private void exportRules()
 	{
 		if(this.grd != null)
 		{
@@ -642,7 +642,7 @@ public class Window extends JFrame {
 	}
 
 
-	public void exportGRD()
+	private void exportGRD()
 	{
 		if(this.grd != null)
 		{
@@ -668,7 +668,7 @@ public class Window extends JFrame {
 	}
 
 
-	public void exportSCC()
+	private void exportSCC()
 	{
 		if(this.grd != null)
 		{
@@ -696,7 +696,7 @@ public class Window extends JFrame {
 		}
 	}
 
-	public void exportFC()
+	private void exportFC()
 	{
 		if(this.grd != null)
 		{
@@ -738,7 +738,7 @@ public class Window extends JFrame {
 	}
 	
 	
-	public void clearDrawZone()
+	private void clearDrawZone()
 	{
 		if(this.view != null)
 			this.remove((Component) this.view);

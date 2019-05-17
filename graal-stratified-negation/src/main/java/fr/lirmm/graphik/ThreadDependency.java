@@ -6,7 +6,7 @@ import org.jgrapht.DirectedGraph;
 
 import fr.lirmm.graphik.graal.api.core.Rule;
 
-public class ThreadDependency extends Thread{
+class ThreadDependency extends Thread{
 
 	private final ArrayList<Rule> src;
 	private final IndexedByBodyPredicateRuleSetWithNegation index;

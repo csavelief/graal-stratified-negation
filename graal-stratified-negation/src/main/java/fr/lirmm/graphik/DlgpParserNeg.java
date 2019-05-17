@@ -13,7 +13,7 @@ import fr.lirmm.graphik.graal.core.atomset.LinkedListAtomSet;
 import fr.lirmm.graphik.graal.io.dlp.DlgpParser;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
-public class DlgpParserNeg {
+class DlgpParserNeg {
 	
 	private static int i = -1;
 	
