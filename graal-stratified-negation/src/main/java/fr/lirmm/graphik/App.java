@@ -8,8 +8,6 @@ import org.graphstream.graph.Graph;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-import fr.lirmm.graphik.graal.api.kb.KnowledgeBase;
-import fr.lirmm.graphik.graal.api.store.Store;
 import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.graal.rulesetanalyser.RuleSetPropertyHierarchy;
 import fr.lirmm.graphik.graal.rulesetanalyser.property.RuleSetProperty;
