@@ -9,7 +9,7 @@ import fr.lirmm.graphik.graal.api.core.Term;
 import fr.lirmm.graphik.util.stream.CloseableIterableWithoutException;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
-public interface ConjunctiveQueryWithNegation extends Query, CloseableIterableWithoutException<Atom> {
+interface ConjunctiveQueryWithNegation extends Query, CloseableIterableWithoutException<Atom> {
 
 	/**
 	 * The label (the name) for this query.
