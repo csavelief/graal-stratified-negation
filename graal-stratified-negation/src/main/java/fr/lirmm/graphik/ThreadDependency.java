@@ -8,9 +8,9 @@ import fr.lirmm.graphik.graal.api.core.Rule;
 
 public class ThreadDependency extends Thread{
 
-	private ArrayList<Rule> src;
-	IndexedByBodyPredicateRuleSetWithNegation index;
-	DirectedGraph<Rule , DefaultDirectedLabeledEdge> graph;
+	private final ArrayList<Rule> src;
+	private final IndexedByBodyPredicateRuleSetWithNegation index;
+	private final DirectedGraph<Rule , DefaultDirectedLabeledEdge> graph;
 	
 	private int nbDep;
 	
