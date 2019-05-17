@@ -79,8 +79,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 	
 	
 
-	public boolean exist(Object q, AtomSet a, RulesCompilation compilation)
-			throws HomomorphismException {
+	public boolean exist(Object q, AtomSet a, RulesCompilation compilation) {
 		
 		return exist(q , a);
 	}
@@ -143,7 +142,7 @@ public class HomomorphismWithNegation extends AbstractProfilable implements Homo
 
 
 	public CloseableIterator<Substitution> execute(Object q, AtomSet a,
-			RulesCompilation compilation) throws HomomorphismException {
+			RulesCompilation compilation) {
 		
 		return execute(q , a);
 	}
