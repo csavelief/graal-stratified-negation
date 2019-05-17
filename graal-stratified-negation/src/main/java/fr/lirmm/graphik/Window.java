@@ -46,28 +46,11 @@ class Window extends JFrame {
 	private static final long serialVersionUID = -4228059556541657661L;
 
 	private final JMenuBar menu;
-	private final JMenu fileMenu;
-	private final JMenuItem chooser;
-	private final JMenuItem quit;
-	private final JMenu toolMenu;
-	private final JMenuItem rulesText;
-	private final JMenuItem grdText;
-	private final JMenuItem grdVisu;
-	private final JMenuItem sccText;
-	private final JMenuItem sccVisu;
-	private final JMenu forwardChaining;
-	private final JMenuItem fcFromFile;
-	private final JMenu saveMenu;
-	private final JMenuItem saveRules;
-	private final JMenuItem saveGRD;
-	private final JMenuItem saveSCC;
-	private final JMenuItem saveFC;
 
 	private View view;
 	private JScrollPane scroll;
 	private final JTextArea displayZone;
 
-	private final JToolBar info;
 	private final JLabel infoNode;
 
 	private DefaultLabeledGraphOfRuleDependencies grd;
@@ -101,16 +84,16 @@ class Window extends JFrame {
 		menu.setVisible(true);
 
 		/* File */
-		fileMenu = new JMenu("File");
+		JMenu fileMenu = new JMenu("File");
 		fileMenu.setPreferredSize(new Dimension(120,30));
 		fileMenu.setMaximumSize(new Dimension(120, 30));
 		fileMenu.setVisible(true);
-		chooser = new JMenuItem("Open");
+		JMenuItem chooser = new JMenuItem("Open");
 		chooser.addActionListener(e -> openFile());
 		fileMenu.add(chooser);
-		
-		
-		quit = new JMenuItem("Quit");
+
+
+		JMenuItem quit = new JMenuItem("Quit");
 		quit.setMaximumSize(new Dimension(120, 30));
 		quit.addActionListener(e -> fermer());
 		quit.setVisible(true);
@@ -119,35 +102,35 @@ class Window extends JFrame {
 
 
 		/* Tool */
-		toolMenu = new JMenu("Tools");
+		JMenu toolMenu = new JMenu("Tools");
 		toolMenu.setPreferredSize(new Dimension(120,30));
 		toolMenu.setMaximumSize(new Dimension(120, 30));
 		toolMenu.setVisible(true);
-		rulesText = new JMenuItem("Print Rules");
+		JMenuItem rulesText = new JMenuItem("Print Rules");
 
 		rulesText.addActionListener(e -> printRules());
 
 		toolMenu.add(rulesText);
-		
-		grdText = new JMenuItem("Print GRD");
+
+		JMenuItem grdText = new JMenuItem("Print GRD");
 		grdText.addActionListener(e -> printGRD());
 		toolMenu.add(grdText);
 
-		grdVisu = new JMenuItem("Display GRD");
+		JMenuItem grdVisu = new JMenuItem("Display GRD");
 		grdVisu.addActionListener(e -> displayGRD());
 		toolMenu.add(grdVisu);
 
-		sccText = new JMenuItem("Print SCC");
+		JMenuItem sccText = new JMenuItem("Print SCC");
 		sccText.addActionListener(e -> printSCC());
 		toolMenu.add(sccText);
 
-		sccVisu = new JMenuItem("Display SCC");
+		JMenuItem sccVisu = new JMenuItem("Display SCC");
 		sccVisu.addActionListener(e -> displaySCC());
 		toolMenu.add(sccVisu);
-		
-		forwardChaining = new JMenu("Forward Chaining");
-		
-		fcFromFile = new JMenuItem("From file");
+
+		JMenu forwardChaining = new JMenu("Forward Chaining");
+
+		JMenuItem fcFromFile = new JMenuItem("From file");
 		fcFromFile.addActionListener(e -> launchForwardChainingFromFile());
 		forwardChaining.add(fcFromFile);
 		/*
@@ -168,24 +151,24 @@ class Window extends JFrame {
 
 
 		/* Save */
-		saveMenu = new JMenu("Save");
+		JMenu saveMenu = new JMenu("Save");
 		saveMenu.setPreferredSize(new Dimension(120,30));
 		saveMenu.setMaximumSize(new Dimension(120, 30));
 		saveMenu.setVisible(true);
 
-		saveRules = new JMenuItem("Save Rules");
+		JMenuItem saveRules = new JMenuItem("Save Rules");
 		saveRules.addActionListener(e -> exportRules());
 		saveMenu.add(saveRules);
 
-		saveGRD = new JMenuItem("Save GRD");
+		JMenuItem saveGRD = new JMenuItem("Save GRD");
 		saveGRD.addActionListener(e -> exportGRD());
 		saveMenu.add(saveGRD);
 
-		saveSCC = new JMenuItem("Save SCC Graph");
+		JMenuItem saveSCC = new JMenuItem("Save SCC Graph");
 		saveSCC.addActionListener(e -> exportSCC());
 		saveMenu.add(saveSCC);
-		
-		saveFC = new JMenuItem("Save Forward Chaining");
+
+		JMenuItem saveFC = new JMenuItem("Save Forward Chaining");
 		saveFC.addActionListener(e -> exportFC());
 		saveMenu.add(saveFC);
 		
@@ -202,7 +185,7 @@ class Window extends JFrame {
 
 		/* Initialize the info zone */
 
-		info = new JToolBar("Information");
+		JToolBar info = new JToolBar("Information");
 		info.setMaximumSize(new Dimension(1024,30));
 		info.setFloatable(false);
 		info.setLayout(new GridLayout(1,6));
@@ -218,7 +201,7 @@ class Window extends JFrame {
 		setLayout(new BorderLayout());
 
 		add(menu , BorderLayout.NORTH);
-		add(info , BorderLayout.SOUTH);
+		add(info, BorderLayout.SOUTH);
 
 		pack();
 		setVisible(true);
