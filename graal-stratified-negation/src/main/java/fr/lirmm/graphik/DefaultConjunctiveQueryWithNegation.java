@@ -13,8 +13,8 @@ import fr.lirmm.graphik.graal.api.core.Term;
 
 public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery implements ConjunctiveQueryWithNegation {
 
-	private InMemoryAtomSet positiveAtomSet;
-	private InMemoryAtomSet negativeAtomSet;
+	private final InMemoryAtomSet positiveAtomSet;
+	private final InMemoryAtomSet negativeAtomSet;
 	private List<Term> responseVariables;
 	private String label;
 	
