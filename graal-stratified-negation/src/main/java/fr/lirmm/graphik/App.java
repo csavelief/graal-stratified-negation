@@ -79,7 +79,7 @@ public class App {
 				System.out.println(s);
 			}
 
-			System.out.println("");
+			System.out.println();
 
 			System.out.print("===== ANALYSIS : ");
 			if (!grd.hasCircuitWithNegativeEdge()) {
@@ -95,7 +95,7 @@ public class App {
 			}
 		}
 
-		System.out.println("");
+		System.out.println();
 	}
 
 	public static void printVersion() {
