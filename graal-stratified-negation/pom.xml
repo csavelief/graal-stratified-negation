@@ -57,17 +57,6 @@
             <version>${jgrapht.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.graphstream</groupId>
-            <artifactId>gs-core</artifactId>
-            <version>${graphstream.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.graphstream</groupId>
-            <artifactId>util</artifactId>
-            <version>1.0</version>
-        </dependency>
-
         <!-- Graal -->
         <dependency>
             <groupId>fr.lirmm.graphik</groupId>
