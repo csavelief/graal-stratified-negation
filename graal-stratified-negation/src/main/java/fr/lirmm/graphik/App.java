@@ -5,7 +5,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.errorprone.annotations.Var;
 
-class App {
+public class App {
 
   private static final String PROGRAM_NAME = "graal-stratified-negation";
   private static final String VERSION = "1.0";

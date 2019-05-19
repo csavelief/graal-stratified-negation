@@ -8,17 +8,51 @@ import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.Var;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
+import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.api.core.Rule;
 import fr.lirmm.graphik.graal.api.forward_chaining.ChaseException;
+import fr.lirmm.graphik.graal.api.io.ParseException;
 import fr.lirmm.graphik.graal.api.kb.KnowledgeBase;
+import fr.lirmm.graphik.graal.core.atomset.LinkedListAtomSet;
 import fr.lirmm.graphik.graal.forward_chaining.SccChase;
 import fr.lirmm.graphik.graal.io.dlp.DlgpParser;
 import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.graph.scc.StronglyConnectedComponentsGraph;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
+import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
 class Utils {
+
+  private static int i = -1;
+
+  public static RuleWithNegation parseRule(String s) throws ParseException {
+
+    LinkedListAtomSet posBody = new LinkedListAtomSet();
+    LinkedListAtomSet negBody = new LinkedListAtomSet();
+
+    Rule r = DlgpParser.parseRule(s);
+
+    i++;
+
+    for (Predicate itPred : r.getBody().getPredicates()) {
+      try (CloseableIteratorWithoutException<Atom> itAtom = r.getBody().atomsByPredicate(itPred)) {
+        for (; itAtom.hasNext();) {
+          Atom a = itAtom.next();
+          if (!a.getPredicate().toString().startsWith("not_")) {
+            posBody.add(a);
+          } else {
+            Predicate p =
+                new Predicate(a.getPredicate().getIdentifier().toString().replaceAll("not_", ""),
+                    a.getPredicate().getArity());
+            a.setPredicate(p);
+            negBody.add(a);
+          }
+        }
+      }
+    }
+    return new DefaultRuleWithNegation(i + "", posBody, negBody, r.getHead());
+  }
 
   public static KBBuilder readKB(KBBuilder kbb, String fileRules, String fileFacts) {
 
@@ -35,7 +69,7 @@ class Utils {
 
         while ((row = br.readLine()) != null) {
           if (row.charAt(0) != '%') {
-            kbb.add(DlgpParserNeg.parseRule(row));
+            kbb.add(parseRule(row));
           }
         }
       } catch (Exception e) {
