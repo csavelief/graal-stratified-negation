@@ -3,9 +3,7 @@ package fr.lirmm.graphik;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
-
 import com.google.errorprone.annotations.Var;
-
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.api.core.Rule;
@@ -15,63 +13,54 @@ import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
 class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet {
 
-  private final TreeMap<Predicate, RuleSet> map;
-
-  // /////////////////////////////////////////////////////////////////////////
-  // CONSTRUCTORS
-  // /////////////////////////////////////////////////////////////////////////
+  private final TreeMap<Predicate, RuleSet> map_;
 
   public IndexedByBodyPredicateRuleSetWithNegation(Iterable<Rule> rules) {
+
     super();
-    this.map = new TreeMap<>();
+
+    map_ = new TreeMap<>();
+
     for (Rule r : rules) {
-      this.add(r);
+      add(r);
     }
   }
 
-  // /////////////////////////////////////////////////////////////////////////
-  // SPECIFIC METHODS
-  // /////////////////////////////////////////////////////////////////////////
-
   public Iterable<Rule> getRulesByPredicates(Iterable<Predicate> predicates) {
+
     ArrayList<Rule> res = new ArrayList<>();
 
     for (Predicate p : predicates) {
-      RuleSet rules = map.get(p);
+      RuleSet rules = map_.get(p);
       if (rules != null) {
-        for (Rule r : map.get(p)) {
+        for (Rule r : map_.get(p)) {
           res.add(r);
         }
       }
     }
-
     return res;
   }
 
-  // /////////////////////////////////////////////////////////////////////////
-  // OVERRIDE METHODS
-  // /////////////////////////////////////////////////////////////////////////
-
   @Override
   public boolean add(Rule rule) {
-    @Var
-    CloseableIteratorWithoutException<Atom> it = rule.getBody().iterator();
-    while (it.hasNext()) {
-      add(it.next().getPredicate(), rule);
+    try (CloseableIteratorWithoutException<Atom> it = rule.getBody().iterator()) {
+      while (it.hasNext()) {
+        add(it.next().getPredicate(), rule);
+      }
     }
-    it = ((DefaultRuleWithNegation) rule).getNegativeBody().iterator();
-    while (it.hasNext()) {
-      add(it.next().getPredicate(), rule);
+    try (CloseableIteratorWithoutException<Atom> it =
+        ((DefaultRuleWithNegation) rule).getNegativeBody().iterator()) {
+      while (it.hasNext()) {
+        add(it.next().getPredicate(), rule);
+      }
     }
-    it.close();
     return true;
   }
 
   @Override
   public boolean addAll(Collection<? extends Rule> c) {
-    // boolean res = super.addAll(c);
     for (Rule rule : c) {
-      this.add(rule);
+      add(rule);
     }
     return true;
   }
@@ -79,10 +68,11 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet {
   @Override
   public boolean remove(Rule rule) {
     boolean res = super.remove(rule);
-    CloseableIteratorWithoutException<Atom> it = rule.getBody().iterator();
-    while (it.hasNext()) {
-      Atom a = it.next();
-      remove(a.getPredicate(), rule);
+    try (CloseableIteratorWithoutException<Atom> it = rule.getBody().iterator()) {
+      while (it.hasNext()) {
+        Atom a = it.next();
+        remove(a.getPredicate(), rule);
+      }
     }
     return res;
   }
@@ -90,13 +80,13 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet {
   @Override
   public void clear() {
     super.clear();
-    this.map.clear();
+    map_.clear();
   }
 
   @Override
   public boolean remove(Object o) {
     if (o instanceof Rule) {
-      return this.remove((Rule) o);
+      return remove((Rule) o);
     }
     return false;
   }
@@ -106,7 +96,7 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet {
     @Var
     boolean res = false;
     for (Object o : c) {
-      res = this.remove(o) || res;
+      res = remove(o) || res;
     }
     return res;
   }
@@ -115,27 +105,23 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet {
   @Override
   public boolean retainAll(Collection<?> c) {
     boolean res = super.retainAll(c);
-    this.map.clear();
-    this.addAll(this);
+    map_.clear();
+    addAll(this);
     return res;
   }
 
-  // /////////////////////////////////////////////////////////////////////////
-  // PRIVATE METHODS
-  // /////////////////////////////////////////////////////////////////////////
-
   private void add(Predicate p, Rule r) {
     @Var
-    RuleSet rules = this.map.get(p);
+    RuleSet rules = map_.get(p);
     if (rules == null) {
       rules = new LinkedListRuleSet();
-      this.map.put(p, rules);
+      map_.put(p, rules);
     }
     rules.add(r);
   }
 
   private void remove(Predicate p, Rule r) {
-    RuleSet rules = this.map.get(p);
+    RuleSet rules = map_.get(p);
     if (rules != null) {
       rules.remove(r);
     }

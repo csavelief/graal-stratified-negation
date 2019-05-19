@@ -1,98 +1,71 @@
 package fr.lirmm.graphik;
 
 import java.util.List;
-
-import com.google.errorprone.annotations.Var;
-
+import java.util.Objects;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Term;
 import fr.lirmm.graphik.graal.core.DefaultConjunctiveQuery;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
-public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
+class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
     implements ConjunctiveQueryWithNegation {
 
-  private final InMemoryAtomSet positiveAtomSet;
-  private final InMemoryAtomSet negativeAtomSet;
-  private List<Term> responseVariables;
-  private String label;
-
-  // /////////////////////////////////////////////////////////////////////////
-  // CONSTRUCTOR
-  // /////////////////////////////////////////////////////////////////////////
-
-  public DefaultConjunctiveQueryWithNegation(InMemoryAtomSet positiveAtomSet,
-      InMemoryAtomSet negagtiveAtomSet, List<Term> ans) {
-    this("", positiveAtomSet, negagtiveAtomSet, ans);
-  }
+  private final InMemoryAtomSet positiveAtomSet_;
+  private final InMemoryAtomSet negativeAtomSet_;
+  private List<Term> responseVariables_;
+  private String label_;
 
   /**
+   * Constructor.
    * 
    * @param label the name of this query
    * @param positiveAtomSet the conjunction of atom representing the query
+   * @param negativeAtomSet the conjunction of atom representing the query
    * @param ans the list of answer variables
    */
   private DefaultConjunctiveQueryWithNegation(String label, InMemoryAtomSet positiveAtomSet,
       InMemoryAtomSet negativeAtomSet, List<Term> ans) {
-    this.positiveAtomSet = positiveAtomSet;
-    this.negativeAtomSet = negativeAtomSet;
-    this.responseVariables = ans;
-    this.label = label;
+    positiveAtomSet_ = positiveAtomSet;
+    negativeAtomSet_ = negativeAtomSet;
+    responseVariables_ = ans;
+    label_ = label;
   }
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PUBLIC METHODS
-  // /////////////////////////////////////////////////////////////////////////
 
   @Override
   public String getLabel() {
-    return this.label;
+    return label_;
   }
 
   @Override
   public void setLabel(String label) {
-    this.label = label;
+    label_ = label;
   }
 
-  /**
-   * Returns the positive facts of the query.
-   */
   @Override
   public InMemoryAtomSet getPositiveAtomSet() {
-    return this.positiveAtomSet;
+    return positiveAtomSet_;
   }
 
-  /**
-   * Returns the negative facts of the query.
-   */
   @Override
   public InMemoryAtomSet getNegativeAtomSet() {
-    return this.negativeAtomSet;
+    return negativeAtomSet_;
   }
 
-  /**
-   * Returns the answer variables of the query.
-   */
   @Override
   public List<Term> getAnswerVariables() {
-    return this.responseVariables;
+    return responseVariables_;
   }
 
   @Override
   public void setAnswerVariables(List<Term> v) {
-    this.responseVariables = v;
+    responseVariables_ = v;
   }
 
   @Override
   public boolean isBoolean() {
-    return responseVariables.isEmpty();
+    return responseVariables_.isEmpty();
   }
-
-
-  // /////////////////////////////////////////////////////////////////////////
-  // OVERRIDE METHODS
-  // /////////////////////////////////////////////////////////////////////////
 
   @Override
   public CloseableIteratorWithoutException<Atom> positiveIterator() {
@@ -107,26 +80,23 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    this.appendTo(sb);
+    appendTo(sb);
     return sb.toString();
   }
 
   @Override
   public void appendTo(StringBuilder sb) {
     sb.append("ANS(");
-    @Var
-    boolean first = true;
-    for (Term t : this.responseVariables) {
-      if (!first) {
+    for (int i = 0; i < responseVariables_.size(); i++) {
+      if (i > 0) {
         sb.append(',');
       }
-      first = false;
-      sb.append(t);
+      sb.append(responseVariables_.get(i));
     }
     sb.append(") : ");
-    sb.append(this.positiveAtomSet);
+    sb.append(positiveAtomSet_);
     sb.append(", !");
-    sb.append(this.negativeAtomSet);
+    sb.append(negativeAtomSet_);
   }
 
   @Override
@@ -138,13 +108,14 @@ public class DefaultConjunctiveQueryWithNegation extends DefaultConjunctiveQuery
       return false;
     }
     ConjunctiveQueryWithNegation other = (ConjunctiveQueryWithNegation) obj;
-    return this.equals(other);
+    return getAnswerVariables().equals(other.getAnswerVariables())
+        && getPositiveAtomSet().equals(other.getPositiveAtomSet())
+        && getNegativeAtomSet().equals(other.getNegativeAtomSet());
   }
 
-  private boolean equals(ConjunctiveQueryWithNegation other) {
-    return this.getAnswerVariables().equals(other.getAnswerVariables())
-        && this.getPositiveAtomSet().equals(other.getPositiveAtomSet())
-        && this.getNegativeAtomSet().equals(other.getNegativeAtomSet());
+  @Override
+  public int hashCode() {
+    return Objects.hash(getAnswerVariables(), getPositiveAtomSet(), getNegativeAtomSet());
   }
 
   @Override

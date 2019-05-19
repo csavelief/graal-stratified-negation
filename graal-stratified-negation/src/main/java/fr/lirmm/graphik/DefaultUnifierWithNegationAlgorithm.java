@@ -1,8 +1,7 @@
 package fr.lirmm.graphik;
 
-
+import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.Var;
-
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -15,66 +14,53 @@ import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
+class DefaultUnifierWithNegationAlgorithm {
 
-public class DefaultUnifierWithNegationAlgorithm {
-
-  private static DefaultUnifierWithNegationAlgorithm instance;
-  private final UnifierChecker[] tab = {};
-
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PUBLIC METHODS
-  // /////////////////////////////////////////////////////////////////////////
-
+  private static DefaultUnifierWithNegationAlgorithm instance_;
+  private final UnifierChecker[] tab_ = {};
 
   public static synchronized DefaultUnifierWithNegationAlgorithm instance() {
-    if (instance == null)
-      instance = new DefaultUnifierWithNegationAlgorithm();
-
-    return instance;
+    if (instance_ == null) {
+      instance_ = new DefaultUnifierWithNegationAlgorithm();
+    }
+    return instance_;
   }
 
   private static boolean hasIntersection(InMemoryAtomSet a1, InMemoryAtomSet a2) {
-
     return a1.removeAll(a2);
   }
 
   public boolean existPositiveDependency(DefaultRuleWithNegation src,
       DefaultRuleWithNegation dest) {
-    DefaultRuleWithNegation r1 =
-        this.createImageOf(src, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
-    DefaultRuleWithNegation r2 =
-        this.createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
 
-    CloseableIteratorWithoutException<Substitution> sigmas = DefaultUnifierAlgorithm.instance()
-        .computePieceUnifier(r1, r2, ProductivityChecker.instance()); // Compute Piece unifiers
-    while (sigmas.hasNext()) {
-      if (isValidPositiveUnifier(r1, r2, sigmas.next())) {
-        sigmas.close();
-        return true;
+    DefaultRuleWithNegation r1 =
+        createImageOf(src, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
+    DefaultRuleWithNegation r2 =
+        createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
+
+    // Compute Piece unifiers
+    try (CloseableIteratorWithoutException<Substitution> sigmas = DefaultUnifierAlgorithm.instance()
+        .computePieceUnifier(r1, r2, ProductivityChecker.instance())) {
+      while (sigmas.hasNext()) {
+        if (isValidPositiveUnifier(r1, r2, sigmas.next())) {
+          return true;
+        }
       }
     }
-
-    sigmas.close();
-
     return false;
   }
 
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PRIVATE METHODS
-  // /////////////////////////////////////////////////////////////////////////
-
   public boolean existNegativeDependency(DefaultRuleWithNegation src,
       DefaultRuleWithNegation dest) {
-    LinkedListAtomSet r1Head = new LinkedListAtomSet();
-    // DefaultRuleWithNegation r1Bis = new DefaultRuleWithNegation(src.getLabel() , src.getBody() ,
-    // src.getNegativeBody() , src.getHead());
 
-    @Var
-    boolean add;
-    try {
-      for (CloseableIterator<Atom> itAtom = src.getHead().iterator(); itAtom.hasNext();) {
+    LinkedListAtomSet r1Head = new LinkedListAtomSet();
+
+    try (CloseableIterator<Atom> itAtom = src.getHead().iterator()) {
+
+      @Var
+      boolean add;
+
+      while (itAtom.hasNext()) {
         Atom a = itAtom.next();
         add = true;
         for (Term t : a.getTerms()) {
@@ -85,38 +71,29 @@ public class DefaultUnifierWithNegationAlgorithm {
             }
           }
         }
-
-        if (add)
+        if (add) {
           r1Head.add(a);
+        }
       }
     } catch (IteratorException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Throwables.getRootCause(e).printStackTrace();
     }
 
     DefaultRuleWithNegation srcBis =
         new DefaultRuleWithNegation(src.getLabel(), src.getBody(), src.getNegativeBody(), r1Head);
-
     DefaultRuleWithNegation r1 =
-        this.createImageOf(srcBis, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
+        createImageOf(srcBis, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
     DefaultRuleWithNegation r2 =
-        this.createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
+        createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
 
-    CloseableIteratorWithoutException<Substitution> sigmas =
-        DefaultUnifierAlgorithm.instance().computePieceUnifier(r1, r2.getNegativeBody(), tab); // Compute
-                                                                                               // Piece
-                                                                                               // unifiers
-
-    while (sigmas.hasNext()) {
-
-      if (isValidNegativeUnifier(r1, r2, sigmas.next())) {
-        sigmas.close();
-        return true;
+    try (CloseableIteratorWithoutException<Substitution> sigmas =
+        DefaultUnifierAlgorithm.instance().computePieceUnifier(r1, r2.getNegativeBody(), tab_)) {
+      while (sigmas.hasNext()) {
+        if (isValidNegativeUnifier(r1, r2, sigmas.next())) {
+          return true;
+        }
       }
     }
-
-    sigmas.close();
-
     return false;
   }
 
@@ -126,18 +103,13 @@ public class DefaultUnifierWithNegationAlgorithm {
     /* Application substitution */
     InMemoryAtomSet bpi = s.createImageOf(r1.getBody());
     InMemoryAtomSet bni = s.createImageOf(r1.getNegativeBody());
-
     InMemoryAtomSet bpj = s.createImageOf(r2.getBody());
     InMemoryAtomSet bnj = s.createImageOf(r2.getNegativeBody());
-
     InMemoryAtomSet hi = s.createImageOf(r1.getHead());
     InMemoryAtomSet hj = s.createImageOf(r2.getHead());
 
-
     boolean i = !hasIntersection(bpi, bni);
-
     boolean ii = !hasIntersection(bpi, bnj);
-
     boolean iii = !hasIntersection(bpj, bnj);
 
     InMemoryAtomSet bpjBis = s.createImageOf(bpj);
@@ -148,36 +120,35 @@ public class DefaultUnifierWithNegationAlgorithm {
     union.addAll(hi); // Atomic heads
     union.addAll(bpi);
     union.addAll(bpj);
+
     @Var
     boolean v = true;
-    try {
-      for (CloseableIterator<Atom> itAtom = hj.iterator(); itAtom.hasNext();) {
+
+    try (CloseableIterator<Atom> itAtom = hj.iterator()) {
+      while (itAtom.hasNext()) {
         if (union.contains(itAtom.next())) {
           v = false;
           break;
         }
       }
     } catch (IteratorException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Throwables.getRootCause(e).printStackTrace();
     }
 
     boolean vi = !hasIntersection(bnj, hi);
-
     @Var
     boolean vii = true;
-    try {
-      for (CloseableIterator<Atom> itAtom = bpj.iterator(); itAtom.hasNext();) {
+
+    try (CloseableIterator<Atom> itAtom = bpj.iterator()) {
+      while (itAtom.hasNext()) {
         if (bpi.contains(itAtom.next())) {
           vii = false;
           break;
         }
       }
     } catch (IteratorException e) {
-      e.printStackTrace();
+      Throwables.getRootCause(e).printStackTrace();
     }
-
-
 
     bpi.clear();
     bni.clear();
@@ -188,7 +159,6 @@ public class DefaultUnifierWithNegationAlgorithm {
     hj.clear();
     union.clear();
 
-
     return (i && ii && iii && iv && v && vi && vii);
   }
 
@@ -198,7 +168,6 @@ public class DefaultUnifierWithNegationAlgorithm {
     /* Application substitution */
     InMemoryAtomSet bpi = s.createImageOf(r1.getBody());
     InMemoryAtomSet bni = s.createImageOf(r1.getNegativeBody());
-
     InMemoryAtomSet bpj = s.createImageOf(r2.getBody());
     InMemoryAtomSet bnj = s.createImageOf(r2.getNegativeBody());
 
@@ -213,7 +182,6 @@ public class DefaultUnifierWithNegationAlgorithm {
     /* (i) */
     boolean inter = hasIntersection(uPos, uNeg); // inter = (B+1 , B+2) inter (B-1 , B-2)
 
-
     bpi.clear();
     bni.clear();
     bpj.clear();
@@ -223,8 +191,6 @@ public class DefaultUnifierWithNegationAlgorithm {
 
     return (!inter);
   }
-
-  /*********************************************************************/
 
   private DefaultRuleWithNegation createImageOf(DefaultRuleWithNegation rule, Substitution s) {
     return new DefaultRuleWithNegation(rule.getLabel(), s.createImageOf(rule.getBody()),

@@ -22,24 +22,20 @@ class DlgpParserNeg {
     i++;
 
     for (Predicate itPred : r.getBody().getPredicates()) {
-
-      CloseableIteratorWithoutException<Atom> itAtom = r.getBody().atomsByPredicate(itPred);
-      for (; itAtom.hasNext();) {
-        Atom a = itAtom.next();
-
-        if (a.getPredicate().toString().startsWith("not_")) {
-
-          Predicate p =
-              new Predicate(a.getPredicate().getIdentifier().toString().replaceAll("not_", ""),
-                  a.getPredicate().getArity());
-          a.setPredicate(p);
-          negBody.add(a);
-        } else {
-
-          posBody.add(a);
+      try (CloseableIteratorWithoutException<Atom> itAtom = r.getBody().atomsByPredicate(itPred)) {
+        for (; itAtom.hasNext();) {
+          Atom a = itAtom.next();
+          if (!a.getPredicate().toString().startsWith("not_")) {
+            posBody.add(a);
+          } else {
+            Predicate p =
+                new Predicate(a.getPredicate().getIdentifier().toString().replaceAll("not_", ""),
+                    a.getPredicate().getArity());
+            a.setPredicate(p);
+            negBody.add(a);
+          }
         }
       }
-      itAtom.close();
     }
     return new DefaultRuleWithNegation(i + "", posBody, negBody, r.getHead());
   }

@@ -1,9 +1,6 @@
 package fr.lirmm.graphik;
 
 import java.io.File;
-
-import org.graphstream.graph.Graph;
-
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.errorprone.annotations.Var;
@@ -19,16 +16,11 @@ class App {
   @Parameter(names = {"-s", "--print-scc"},
       description = "Print the Strongly Connected Components.")
   private boolean print_scc = false;
-  @Parameter(names = {"-G", "--print-gscc"},
-      description = "Print the graph of the GRD Strongly Connected Components.")
-  private boolean print_gscc = false;
   @Parameter(names = {"-r", "--rule-set"}, description = "Print the rule set.")
   private boolean print_ruleset = false;
   @Parameter(names = {"-c", "--forward-chaining"},
       description = "Apply forward chaining on the specified Fact Base.")
   private String facts_filepath = "-";
-  @Parameter(names = {"-w", "--window"}, description = "Launch the GUI.")
-  private boolean gui = false;
   @Parameter(names = {"-h", "--help"}, description = "Print this message.")
   private boolean help = false;
   @Parameter(names = {"-v", "--version"}, description = "Print version information")
@@ -36,10 +28,6 @@ class App {
 
   @SuppressWarnings("deprecation")
   public static void main(String[] args) {
-
-    System.setProperty("org.graphstream.ui.renderer",
-        "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-    // new Window(true);
 
     App options = new App();
     @Var
@@ -63,9 +51,7 @@ class App {
       System.exit(0);
     }
 
-    if (options.gui) {
-      new Window(true);
-    } else if (options.input_filepath.compareTo("-") == 0) {
+    if (options.input_filepath.compareTo("-") == 0) {
       System.out.println("Error, you need a Rule Base or at least launch the GUI");
       System.exit(0);
     } else {
@@ -75,42 +61,34 @@ class App {
           new DefaultLabeledGraphOfRuleDependencies(new File(options.input_filepath));
 
       if (options.print_ruleset) {
-        String s = Window.getRulesText(grd.getRules());
+        String s = Utils.getRulesText(grd.getRules());
         System.out.println(s);
       }
 
       if (options.print_grd) {
-        String s = Window.getGRDText(grd);
+        String s = Utils.getGRDText(grd);
         System.out.println(s);
       }
 
       if (options.print_scc) {
-        String s = Window.getSCCText(grd.getStronglyConnectedComponentsGraph());
+        String s = Utils.getSCCText(grd.getStronglyConnectedComponentsGraph());
         System.out.println(s);
       }
-
-      if (options.print_gscc) {
-        Graph sccDisp = DefaultGraphOfRuleDependenciesViewer.instance().getSCCGraph(grd);
-        String s = Window.getGSCCText(sccDisp);
-        System.out.println(s);
-      }
-
-      System.out.println();
 
       System.out.print("===== ANALYSIS : ");
+
       if (!grd.hasCircuitWithNegativeEdge()) {
+
         System.out.println("STRATIFIABLE =====");
 
         if (options.facts_filepath.compareTo("-") != 0) {
-          String s = Window.getSaturationFromFile(options.facts_filepath, grd);
+          String s = Utils.getSaturationFromFile(options.facts_filepath, grd);
           System.out.println(s);
         }
       } else {
         System.out.println("NOT STRATITIFABLE =====");
       }
     }
-
-    System.out.println();
   }
 
   private static void printVersion() {

@@ -1,7 +1,7 @@
 package fr.lirmm.graphik;
 
 import java.util.ArrayList;
-
+import com.google.common.base.Throwables;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
@@ -19,88 +19,59 @@ import fr.lirmm.graphik.util.stream.CloseableIteratorAdapter;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
-
-public class HomomorphismWithNegation extends AbstractProfilable
+class HomomorphismWithNegation extends AbstractProfilable
     implements HomomorphismWithCompilation<Object, AtomSet> {
 
-  private static HomomorphismWithNegation instance;
-
-
-  // /////////////////////////////////////////////////////////////////////////
-  // CONSTRUCTORS
-  // /////////////////////////////////////////////////////////////////////////
-
+  private static HomomorphismWithNegation instance_;
 
   private HomomorphismWithNegation() {
 
   }
 
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PUBLIC METHODS
-  // /////////////////////////////////////////////////////////////////////////
-
   public static synchronized HomomorphismWithNegation instance() {
-    if (instance == null)
-      instance = new HomomorphismWithNegation();
-
-    return instance;
+    if (instance_ == null) {
+      instance_ = new HomomorphismWithNegation();
+    }
+    return instance_;
   }
-
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PRIVATE METHODS
-  // /////////////////////////////////////////////////////////////////////////
 
   private boolean verifSub(Substitution sub, AtomSet negPart, AtomSet factBase)
       throws AtomSetException {
 
     LinkedListAtomSet res = new LinkedListAtomSet();
-
     sub.apply(negPart, res);
 
-
     for (Predicate p : res.getPredicates()) {
-
-      CloseableIteratorWithoutException<Atom> itAtom = res.atomsByPredicate(p);
-
-      for (; itAtom.hasNext();) {
-
-        Atom a = itAtom.next();
-        if (factBase.contains(a))
-          return false;
+      try (CloseableIteratorWithoutException<Atom> itAtom = res.atomsByPredicate(p)) {
+        while (itAtom.hasNext()) {
+          Atom a = itAtom.next();
+          if (factBase.contains(a)) {
+            return false;
+          }
+        }
       }
-
-      itAtom.close();
     }
-
     return true;
   }
 
   @Override
   public boolean exist(Object q, AtomSet a, RulesCompilation compilation) {
-
     return exist(q, a);
   }
 
   @Override
   public boolean exist(Object q, AtomSet a) {
-    try {
-      CloseableIterator<Substitution> l =
-          SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(
-              ((DefaultConjunctiveQueryWithNegation) q).getPositiveAtomSet()), a);
-
-      for (; l.hasNext();) {
+    try (CloseableIterator<Substitution> l = SmartHomomorphism.instance().execute(
+        new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation) q).getPositiveAtomSet()),
+        a)) {
+      while (l.hasNext()) {
         Substitution s = l.next();
-
-        if (verifSub(s, ((DefaultConjunctiveQueryWithNegation) q).getNegativeAtomSet(), a))
+        if (verifSub(s, ((DefaultConjunctiveQueryWithNegation) q).getNegativeAtomSet(), a)) {
           return true;
+        }
       }
-
-      l.close();
-
     } catch (HomomorphismException | IteratorException | AtomSetException e) {
-      e.printStackTrace();
+      Throwables.getRootCause(e).printStackTrace();
     }
     return false;
   }
@@ -108,38 +79,26 @@ public class HomomorphismWithNegation extends AbstractProfilable
   @Override
   public CloseableIterator<Substitution> execute(Object q, AtomSet a) {
 
+    ArrayList<Substitution> list = new ArrayList<>();
 
-    ArrayList<Substitution> liste = new ArrayList<>();
-
-    try {
-      CloseableIterator<Substitution> l =
-          SmartHomomorphism.instance().execute(new DefaultConjunctiveQuery(
-              ((DefaultConjunctiveQueryWithNegation) q).getPositiveAtomSet()), a);
-
-      for (; l.hasNext();) {
+    try (CloseableIterator<Substitution> l = SmartHomomorphism.instance().execute(
+        new DefaultConjunctiveQuery(((DefaultConjunctiveQueryWithNegation) q).getPositiveAtomSet()),
+        a)) {
+      while (l.hasNext()) {
         Substitution s = l.next();
-
-        if (verifSub(s, ((DefaultConjunctiveQueryWithNegation) q).getNegativeAtomSet(), a))
-          liste.add(s);
+        if (verifSub(s, ((DefaultConjunctiveQueryWithNegation) q).getNegativeAtomSet(), a)) {
+          list.add(s);
+        }
       }
-
-      l.close();
-
-    } catch (HomomorphismException e) {
-      e.printStackTrace();
-    } catch (IteratorException e) {
-      e.printStackTrace();
-    } catch (AtomSetException e) {
-      e.printStackTrace();
+    } catch (HomomorphismException | IteratorException | AtomSetException e) {
+      Throwables.getRootCause(e).printStackTrace();
     }
-
-    return new CloseableIteratorAdapter<>(liste.iterator());
+    return new CloseableIteratorAdapter<>(list.iterator());
   }
 
   @Override
   public CloseableIterator<Substitution> execute(Object q, AtomSet a,
       RulesCompilation compilation) {
-
     return execute(q, a);
   }
 }

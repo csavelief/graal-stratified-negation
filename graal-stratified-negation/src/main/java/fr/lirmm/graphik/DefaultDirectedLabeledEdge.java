@@ -4,61 +4,50 @@ import fr.lirmm.graphik.util.graph.DirectedEdge;
 
 class DefaultDirectedLabeledEdge implements DirectedEdge {
 
-  private final int tail;
-  private final int head;
-  private final char label;
-
-
-  // /////////////////////////////////////////////////////////////////////////
-  // CONSTRUCTORS
-  // /////////////////////////////////////////////////////////////////////////
-
+  private final int tail_;
+  private final int head_;
+  private final char label_;
 
   public DefaultDirectedLabeledEdge(int tail, int head, char label) {
-    this.tail = tail;
-    this.head = head;
-    this.label = label;
+    tail_ = tail;
+    head_ = head;
+    label_ = label;
   }
-
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PUBLIC METHODS
-  // /////////////////////////////////////////////////////////////////////////
 
   @Override
   public int getFirst() {
-    return this.getTail();
+    return getTail();
   }
 
   @Override
   public int getSecond() {
-    return this.getHead();
+    return getHead();
   }
 
   @Override
   public int getHead() {
-    return this.head;
+    return head_;
   }
 
   @Override
   public int getTail() {
-    return this.tail;
+    return tail_;
   }
 
   public char getLabel() {
-    return this.label;
+    return label_;
   }
 
   @Override
   public String toString() {
-    StringBuilder s = new StringBuilder();
-    s.append("(");
-    s.append(tail);
-    s.append("=");
-    s.append(label);
-    s.append("=>");
-    s.append(head);
-    s.append(")");
-    return s.toString();
+    StringBuilder sb = new StringBuilder();
+    sb.append("(");
+    sb.append(tail_);
+    sb.append("=");
+    sb.append(label_);
+    sb.append("=>");
+    sb.append(head_);
+    sb.append(")");
+    return sb.toString();
   }
 }

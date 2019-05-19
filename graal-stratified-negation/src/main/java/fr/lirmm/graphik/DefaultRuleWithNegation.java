@@ -1,98 +1,77 @@
 package fr.lirmm.graphik;
 
-
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.core.DefaultRule;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
-public class DefaultRuleWithNegation extends DefaultRule implements RuleWithNegation {
+class DefaultRuleWithNegation extends DefaultRule implements RuleWithNegation {
 
-  private final InMemoryAtomSet negativeBody;
-  private int indice;
-
-  // /////////////////////////////////////////////////////////////////////////
-  // CONSTRUCTORS
-  // /////////////////////////////////////////////////////////////////////////
+  private final InMemoryAtomSet negativeBody_;
+  private final int indice_;
 
   public DefaultRuleWithNegation(String label, InMemoryAtomSet positiveBody,
       InMemoryAtomSet negativeBody, InMemoryAtomSet head) {
 
     super(label, positiveBody, head);
-    this.negativeBody = negativeBody;
 
-    try {
-      this.indice = Integer.parseInt(getLabel());
-    } catch (NumberFormatException e) {
-      System.out.println("Error not a number : '" + getLabel() + "'");
-    }
+    negativeBody_ = negativeBody;
+    indice_ = Integer.parseInt(getLabel());
   }
-
-  // /////////////////////////////////////////////////////////////////////////
-  // PUBLIC METHODS
-  // /////////////////////////////////////////////////////////////////////////
 
   @Override
   public InMemoryAtomSet getNegativeBody() {
-    return this.negativeBody;
+    return negativeBody_;
   }
 
   @Override
   public String toString() {
-
-    StringBuilder builder = new StringBuilder();
-    this.appendTo(builder);
-
-    return builder.toString();
+    StringBuilder sb = new StringBuilder();
+    appendTo(sb);
+    return sb.toString();
   }
 
   @Override
   public void appendTo(StringBuilder builder) {
 
-    if (!this.getLabel().isEmpty()) {
+    if (!getLabel().isEmpty()) {
       builder.append('[');
-      builder.append(this.getLabel());
+      builder.append(getLabel());
       builder.append("] ");
     }
 
-    /* Positive body */
     builder.append("[");
 
-
-    for (Predicate p : this.getBody().getPredicates()) {
-
-      CloseableIteratorWithoutException<Atom> itAtom = this.getBody().atomsByPredicate(p);
-      for (; itAtom.hasNext();) {
-        Atom a = itAtom.next();
-        builder.append(a.toString());
-        builder.append(" , ");
+    // Positive body
+    for (Predicate p : getBody().getPredicates()) {
+      try (CloseableIteratorWithoutException<Atom> itAtom = getBody().atomsByPredicate(p)) {
+        while (itAtom.hasNext()) {
+          Atom a = itAtom.next();
+          builder.append(a.toString());
+          builder.append(" , ");
+        }
       }
-      itAtom.close();
-
     }
 
     builder.replace(builder.length() - 2, builder.length(), "");
 
-
-    /* Negative body */
-
-    for (Predicate p : this.getNegativeBody().getPredicates()) {
-
-      CloseableIteratorWithoutException<Atom> itAtom = this.getNegativeBody().atomsByPredicate(p);
-      for (; itAtom.hasNext();) {
-        Atom a = itAtom.next();
-        builder.append(" , !");
-        builder.append(a.toString());
+    // Negative body
+    for (Predicate p : getNegativeBody().getPredicates()) {
+      try (CloseableIteratorWithoutException<Atom> itAtom = getNegativeBody().atomsByPredicate(p)) {
+        while (itAtom.hasNext()) {
+          Atom a = itAtom.next();
+          builder.append(" , !");
+          builder.append(a.toString());
+        }
       }
-      itAtom.close();
     }
 
     builder.append("] -> ");
-    builder.append(this.getHead());
+    builder.append(getHead());
   }
 
   public int getIndice() {
-    return this.indice;
+    return indice_;
   }
 }

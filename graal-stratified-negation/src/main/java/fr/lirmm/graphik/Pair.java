@@ -2,30 +2,30 @@ package fr.lirmm.graphik;
 
 class Pair<L, R> {
 
-  private final L first;
-  private final R last;
+  private final L first_;
+  private final R last_;
 
   public Pair(L first, R last) {
-    this.first = first;
-    this.last = last;
+    this.first_ = first;
+    this.last_ = last;
   }
 
   public L getFirst() {
-    return first;
+    return first_;
   }
 
   public R getLast() {
-    return last;
+    return last_;
   }
 
   @Override
   public String toString() {
-    StringBuilder s = new StringBuilder();
-    s.append("<");
-    s.append(first);
-    s.append(",");
-    s.append(last);
-    s.append(">");
-    return s.toString();
+    StringBuilder sb = new StringBuilder();
+    sb.append("<");
+    sb.append(first_);
+    sb.append(",");
+    sb.append(last_);
+    sb.append(">");
+    return sb.toString();
   }
 }
