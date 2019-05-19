@@ -1,11 +1,14 @@
 package fr.lirmm.graphik;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import com.google.errorprone.annotations.Var;
+
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.io.dlp.DlgpParser;
@@ -13,80 +16,75 @@ import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 class Utils {
-	
-	public static KBBuilder readKB(KBBuilder kbb , String fileRules , String fileFacts) {
 
-		/* Parsing Rules */
-		if(fileRules != null)
-		{
-			System.out.println("Rules : parsing of '" + fileRules + "'");
-			try {
-				InputStream ips = new FileInputStream(fileRules);
-				InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
-				BufferedReader br = new BufferedReader(ipsr);
-				@Var String ligne;
+  public static KBBuilder readKB(KBBuilder kbb, String fileRules, String fileFacts) {
 
-				while ((ligne = br.readLine()) != null) {
-					if(ligne.charAt(0) != '%')
-						kbb.add(DlgpParserNeg.parseRule(ligne));
-				}
+    /* Parsing Rules */
+    if (fileRules != null) {
+      System.out.println("Rules : parsing of '" + fileRules + "'");
+      try {
+        InputStream ips = new FileInputStream(fileRules);
+        InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
+        BufferedReader br = new BufferedReader(ipsr);
+        @Var
+        String ligne;
 
-				br.close();
-				ipsr.close();
-				ips.close();
+        while ((ligne = br.readLine()) != null) {
+          if (ligne.charAt(0) != '%')
+            kbb.add(DlgpParserNeg.parseRule(ligne));
+        }
 
-			}
-			catch (Exception e) {
-				System.out.println("Caca" + e.toString());
-				e.printStackTrace();
-			}
-		}
+        br.close();
+        ipsr.close();
+        ips.close();
 
-		/* Parsing Facts */
+      } catch (Exception e) {
+        System.out.println("Caca" + e.toString());
+        e.printStackTrace();
+      }
+    }
 
-		if(fileFacts != null)
-		{
-			System.out.println("Facts : parsing of '" + fileFacts + "'");
-			try {
-				InputStream ips = new FileInputStream(fileFacts);
-				InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
-				BufferedReader br = new BufferedReader(ipsr);
-				@Var String ligne;
+    /* Parsing Facts */
 
-				while ((ligne = br.readLine()) != null){
-					if(ligne.charAt(0) != '%')
-						kbb.add(DlgpParser.parseAtom(ligne));
-				}
+    if (fileFacts != null) {
+      System.out.println("Facts : parsing of '" + fileFacts + "'");
+      try {
+        InputStream ips = new FileInputStream(fileFacts);
+        InputStreamReader ipsr = new InputStreamReader(ips, UTF_8);
+        BufferedReader br = new BufferedReader(ipsr);
+        @Var
+        String ligne;
 
-				br.close();
-				ipsr.close();
-				ips.close();
+        while ((ligne = br.readLine()) != null) {
+          if (ligne.charAt(0) != '%')
+            kbb.add(DlgpParser.parseAtom(ligne));
+        }
 
-			} catch (Exception e) {
-				System.out.println(e.toString());
-			}
-		}
-		
-		return kbb;
-	}
+        br.close();
+        ipsr.close();
+        ips.close();
 
-	public static String displayFacts(AtomSet facts)
-	{
-		StringBuilder s = new StringBuilder("== Saturation ==\n");
-		
-		try {
-			for(CloseableIterator<Atom> itAtom = facts.iterator() ; itAtom.hasNext() ; )
-			{
-				s.append(itAtom.next().toString());
-				s.append(".\n");
-			}
-		} catch (IteratorException e) {
-			e.printStackTrace();
-		}
-		
-		return s.toString();
-	}
+      } catch (Exception e) {
+        System.out.println(e.toString());
+      }
+    }
+
+    return kbb;
+  }
+
+  public static String displayFacts(AtomSet facts) {
+    StringBuilder s = new StringBuilder("== Saturation ==\n");
+
+    try {
+      for (CloseableIterator<Atom> itAtom = facts.iterator(); itAtom.hasNext();) {
+        s.append(itAtom.next().toString());
+        s.append(".\n");
+      }
+    } catch (IteratorException e) {
+      e.printStackTrace();
+    }
+
+    return s.toString();
+  }
 }
