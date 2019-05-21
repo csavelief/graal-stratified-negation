@@ -169,8 +169,8 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
   }
 
   private void addDependency(Rule src, Rule target, char label) {
-    graph_.addEdge(src, target, new DirectedLabeledEdge(((RuleWithNegation) src).getIndice(),
-        ((RuleWithNegation) target).getIndice(), label));
+    graph_.addEdge(src, target, new DirectedLabeledEdge(((RuleWithNegation) src).indice(),
+        ((RuleWithNegation) target).indice(), label));
   }
 
   @Override
@@ -219,7 +219,7 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
       for (DirectedLabeledEdge e : graph_.outgoingEdgesOf(circuit.get(i))) {
 
         // Wanted edge found
-        if (e.getHead() == ((RuleWithNegation) circuit.get(i + 1)).getIndice()) {
+        if (e.getHead() == ((RuleWithNegation) circuit.get(i + 1)).indice()) {
           if (e.getLabel() == '-') {
             return true;
           }
@@ -233,7 +233,7 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     for (DirectedLabeledEdge e : graph_.outgoingEdgesOf(circuit.get(i))) {
 
       // Wanted edge found
-      if (e.getHead() == ((RuleWithNegation) circuit.get(0)).getIndice()) {
+      if (e.getHead() == ((RuleWithNegation) circuit.get(0)).indice()) {
         if (e.getLabel() == '-') {
           return true;
         }
@@ -294,8 +294,8 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
     private void addEdge(Rule r1, Rule r2, char label) {
       synchronized (graph_) {
-        graph_.addEdge(r1, r2, new DirectedLabeledEdge(((RuleWithNegation) r1).getIndice(),
-            ((RuleWithNegation) r2).getIndice(), label));
+        graph_.addEdge(r1, r2, new DirectedLabeledEdge(((RuleWithNegation) r1).indice(),
+            ((RuleWithNegation) r2).indice(), label));
       }
     }
   }

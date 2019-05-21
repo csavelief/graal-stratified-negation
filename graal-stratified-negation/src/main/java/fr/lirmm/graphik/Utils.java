@@ -29,7 +29,7 @@ class Utils {
 
   private static int i = -1;
 
-  public static IRuleWithNegation parseRule(String s) throws ParseException {
+  public static RuleWithNegation parseRule(String s) throws ParseException {
 
     LinkedListAtomSet posBody = new LinkedListAtomSet();
     LinkedListAtomSet negBody = new LinkedListAtomSet();

@@ -79,14 +79,14 @@ class UnifierWithNegationAlgorithm {
     }
 
     RuleWithNegation srcBis =
-        new RuleWithNegation(src.getLabel(), src.getBody(), src.getNegativeBody(), r1Head);
+        new RuleWithNegation(src.getLabel(), src.getBody(), src.negativeBody(), r1Head);
     RuleWithNegation r1 =
         createImageOf(srcBis, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
     RuleWithNegation r2 =
         createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
 
     try (CloseableIteratorWithoutException<Substitution> sigmas =
-        DefaultUnifierAlgorithm.instance().computePieceUnifier(r1, r2.getNegativeBody(), tab_)) {
+        DefaultUnifierAlgorithm.instance().computePieceUnifier(r1, r2.negativeBody(), tab_)) {
       while (sigmas.hasNext()) {
         if (isValidNegativeUnifier(r1, r2, sigmas.next())) {
           return true;
@@ -100,9 +100,9 @@ class UnifierWithNegationAlgorithm {
 
     /* Application substitution */
     InMemoryAtomSet bpi = s.createImageOf(r1.getBody());
-    InMemoryAtomSet bni = s.createImageOf(r1.getNegativeBody());
+    InMemoryAtomSet bni = s.createImageOf(r1.negativeBody());
     InMemoryAtomSet bpj = s.createImageOf(r2.getBody());
-    InMemoryAtomSet bnj = s.createImageOf(r2.getNegativeBody());
+    InMemoryAtomSet bnj = s.createImageOf(r2.negativeBody());
     InMemoryAtomSet hi = s.createImageOf(r1.getHead());
     InMemoryAtomSet hj = s.createImageOf(r2.getHead());
 
@@ -164,9 +164,9 @@ class UnifierWithNegationAlgorithm {
 
     /* Application substitution */
     InMemoryAtomSet bpi = s.createImageOf(r1.getBody());
-    InMemoryAtomSet bni = s.createImageOf(r1.getNegativeBody());
+    InMemoryAtomSet bni = s.createImageOf(r1.negativeBody());
     InMemoryAtomSet bpj = s.createImageOf(r2.getBody());
-    InMemoryAtomSet bnj = s.createImageOf(r2.getNegativeBody());
+    InMemoryAtomSet bnj = s.createImageOf(r2.negativeBody());
 
     InMemoryAtomSet uPos = new LinkedListAtomSet();
     uPos.addAll(bpi);
@@ -191,6 +191,6 @@ class UnifierWithNegationAlgorithm {
 
   private RuleWithNegation createImageOf(RuleWithNegation rule, Substitution s) {
     return new RuleWithNegation(rule.getLabel(), s.createImageOf(rule.getBody()),
-        s.createImageOf(rule.getNegativeBody()), s.createImageOf(rule.getHead()));
+        s.createImageOf(rule.negativeBody()), s.createImageOf(rule.getHead()));
   }
 }

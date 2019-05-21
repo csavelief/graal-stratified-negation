@@ -6,7 +6,7 @@ import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.core.DefaultRule;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
-class RuleWithNegation extends DefaultRule implements IRuleWithNegation {
+class RuleWithNegation extends DefaultRule {
 
   private final InMemoryAtomSet negativeBody_;
   private final int indice_;
@@ -20,8 +20,12 @@ class RuleWithNegation extends DefaultRule implements IRuleWithNegation {
     indice_ = Integer.parseInt(getLabel());
   }
 
-  @Override
-  public InMemoryAtomSet getNegativeBody() {
+  /**
+   * Get the negative body (the hypothesis) of this rule.
+   *
+   * @return the body of this rule.
+   */
+  public InMemoryAtomSet negativeBody() {
     return negativeBody_;
   }
 
@@ -57,8 +61,8 @@ class RuleWithNegation extends DefaultRule implements IRuleWithNegation {
     builder.replace(builder.length() - 2, builder.length(), "");
 
     // Negative body
-    for (Predicate p : getNegativeBody().getPredicates()) {
-      try (CloseableIteratorWithoutException<Atom> itAtom = getNegativeBody().atomsByPredicate(p)) {
+    for (Predicate p : negativeBody().getPredicates()) {
+      try (CloseableIteratorWithoutException<Atom> itAtom = negativeBody().atomsByPredicate(p)) {
         while (itAtom.hasNext()) {
           Atom a = itAtom.next();
           builder.append(" , !");
@@ -71,7 +75,7 @@ class RuleWithNegation extends DefaultRule implements IRuleWithNegation {
     builder.append(getHead());
   }
 
-  public int getIndice() {
+  public int indice() {
     return indice_;
   }
 }

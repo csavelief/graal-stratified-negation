@@ -42,7 +42,7 @@ class RulesIndex {
 
     for (Rule rule : rules) {
       index(rule, rule.getBody());
-      index(rule, ((RuleWithNegation) rule).getNegativeBody());
+      index(rule, ((RuleWithNegation) rule).negativeBody());
     }
   }
 
