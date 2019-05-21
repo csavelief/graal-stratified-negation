@@ -34,10 +34,6 @@ class DirectedLabeledEdge implements DirectedEdge {
     return tail_;
   }
 
-  public char getLabel() {
-    return label_;
-  }
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -49,5 +45,9 @@ class DirectedLabeledEdge implements DirectedEdge {
     sb.append(head_);
     sb.append(")");
     return sb.toString();
+  }
+
+  public char getLabel() {
+    return label_;
   }
 }
