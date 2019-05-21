@@ -1,6 +1,7 @@
 package fr.lirmm.graphik;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,12 +10,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.cycle.TarjanSimpleCycles;
 import org.jgrapht.graph.DefaultDirectedGraph;
+
 import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.Var;
+
 import fr.lirmm.graphik.graal.api.core.GraphOfRuleDependencies;
 import fr.lirmm.graphik.graal.api.core.Rule;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -76,8 +80,8 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
   private void computeDependencies() {
 
-    IndexedByBodyPredicateRuleSetWithNegation index =
-        new IndexedByBodyPredicateRuleSetWithNegation(rules_);
+    RulesIndex index =
+        new RulesIndex(rules_);
     int cores = Runtime.getRuntime().availableProcessors();
     ArrayList<ArrayList<Rule>> l = new ArrayList<>();
 
@@ -252,10 +256,10 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
   static class ThreadDependency extends Thread {
 
     private final ArrayList<Rule> src_;
-    private final IndexedByBodyPredicateRuleSetWithNegation index_;
+    private final RulesIndex index_;
     private final DirectedGraph<Rule, DirectedLabeledEdge> graph_;
 
-    public ThreadDependency(ArrayList<Rule> src, IndexedByBodyPredicateRuleSetWithNegation index,
+    public ThreadDependency(ArrayList<Rule> src, RulesIndex index,
         DirectedGraph<Rule, DirectedLabeledEdge> graph) {
       src_ = src;
       index_ = index;
@@ -265,7 +269,7 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     @Override
     public void run() {
       for (Rule r1 : src_) {
-        Iterable<Rule> candidates = index_.getRulesByPredicates(r1.getHead().getPredicates());
+        Iterable<Rule> candidates = index_.rules(r1.getHead().getPredicates());
         if (candidates != null) {
           for (Rule r2 : candidates) {
             synchronized (graph_) {
