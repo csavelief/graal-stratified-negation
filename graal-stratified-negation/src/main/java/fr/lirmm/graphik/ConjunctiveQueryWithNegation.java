@@ -25,12 +25,15 @@ interface ConjunctiveQueryWithNegation extends Query, CloseableIterableWithoutEx
   InMemoryAtomSet getNegativeAtomSet();
 
   /**
-   * Get the answer variables
+   * Get the answer variables.
    * 
    * @return an Collection of Term representing the answer variables.
    */
   List<Term> getAnswerVariables();
 
+  /**
+   * Set the answer variables.
+   */
   void setAnswerVariables(List<Term> ans);
 
   /**
