@@ -1,7 +1,6 @@
 package fr.lirmm.graphik;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,15 +9,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.cycle.TarjanSimpleCycles;
 import org.jgrapht.graph.DefaultDirectedGraph;
-
 import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.Var;
-
 import fr.lirmm.graphik.graal.api.core.GraphOfRuleDependencies;
 import fr.lirmm.graphik.graal.api.core.Rule;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -259,14 +255,11 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     private final IndexedByBodyPredicateRuleSetWithNegation index_;
     private final DirectedGraph<Rule, DirectedLabeledEdge> graph_;
 
-    private int nbDep;
-
     public ThreadDependency(ArrayList<Rule> src, IndexedByBodyPredicateRuleSetWithNegation index,
         DirectedGraph<Rule, DirectedLabeledEdge> graph) {
       src_ = src;
       index_ = index;
       graph_ = graph;
-      nbDep = 0;
     }
 
     @Override
@@ -297,14 +290,9 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
     private void addEdge(Rule r1, Rule r2, char label) {
       synchronized (graph_) {
-        nbDep++;
         graph_.addEdge(r1, r2, new DirectedLabeledEdge(((RuleWithNegation) r1).getIndice(),
             ((RuleWithNegation) r2).getIndice(), label));
       }
-    }
-
-    public int getNbDep() {
-      return nbDep;
     }
   }
 }
