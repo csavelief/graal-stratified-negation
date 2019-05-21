@@ -1,11 +1,14 @@
 package fr.lirmm.graphik;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+
 import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.Var;
+
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.Predicate;
@@ -26,7 +29,7 @@ class Utils {
 
   private static int i = -1;
 
-  public static RuleWithNegation parseRule(String s) throws ParseException {
+  public static IRuleWithNegation parseRule(String s) throws ParseException {
 
     LinkedListAtomSet posBody = new LinkedListAtomSet();
     LinkedListAtomSet negBody = new LinkedListAtomSet();
@@ -51,7 +54,7 @@ class Utils {
         }
       }
     }
-    return new DefaultRuleWithNegation(i + "", posBody, negBody, r.getHead());
+    return new RuleWithNegation(i + "", posBody, negBody, r.getHead());
   }
 
   public static KBBuilder readKB(KBBuilder kbb, String fileRules, String fileFacts) {
@@ -113,8 +116,7 @@ class Utils {
     return sb.toString();
   }
 
-  public static String getSaturationFromFile(String src,
-      DefaultLabeledGraphOfRuleDependencies grd) {
+  public static String getSaturationFromFile(String src, LabeledGraphOfRuleDependencies grd) {
 
     KBBuilder kbb = new KBBuilder();
     Utils.readKB(kbb, null, src);
@@ -138,7 +140,7 @@ class Utils {
     return sb.toString();
   }
 
-  public static String getGRDText(DefaultLabeledGraphOfRuleDependencies grd) {
+  public static String getGRDText(LabeledGraphOfRuleDependencies grd) {
     StringBuilder sb = new StringBuilder("======== GRD =========\n");
     for (Rule r1 : grd.getRules()) {
       for (Rule r2 : grd.getTriggeredRules(r1)) {

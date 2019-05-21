@@ -2,6 +2,7 @@ package fr.lirmm.graphik;
 
 import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.Var;
+
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -14,14 +15,14 @@ import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
-class DefaultUnifierWithNegationAlgorithm {
+class UnifierWithNegationAlgorithm {
 
-  private static DefaultUnifierWithNegationAlgorithm instance_;
+  private static UnifierWithNegationAlgorithm instance_;
   private final UnifierChecker[] tab_ = {};
 
-  public static synchronized DefaultUnifierWithNegationAlgorithm instance() {
+  public static synchronized UnifierWithNegationAlgorithm instance() {
     if (instance_ == null) {
-      instance_ = new DefaultUnifierWithNegationAlgorithm();
+      instance_ = new UnifierWithNegationAlgorithm();
     }
     return instance_;
   }
@@ -30,12 +31,11 @@ class DefaultUnifierWithNegationAlgorithm {
     return a1.removeAll(a2);
   }
 
-  public boolean existPositiveDependency(DefaultRuleWithNegation src,
-      DefaultRuleWithNegation dest) {
+  public boolean existPositiveDependency(RuleWithNegation src, RuleWithNegation dest) {
 
-    DefaultRuleWithNegation r1 =
+    RuleWithNegation r1 =
         createImageOf(src, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
-    DefaultRuleWithNegation r2 =
+    RuleWithNegation r2 =
         createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
 
     // Compute Piece unifiers
@@ -50,8 +50,7 @@ class DefaultUnifierWithNegationAlgorithm {
     return false;
   }
 
-  public boolean existNegativeDependency(DefaultRuleWithNegation src,
-      DefaultRuleWithNegation dest) {
+  public boolean existNegativeDependency(RuleWithNegation src, RuleWithNegation dest) {
 
     LinkedListAtomSet r1Head = new LinkedListAtomSet();
 
@@ -79,11 +78,11 @@ class DefaultUnifierWithNegationAlgorithm {
       Throwables.getRootCause(e).printStackTrace();
     }
 
-    DefaultRuleWithNegation srcBis =
-        new DefaultRuleWithNegation(src.getLabel(), src.getBody(), src.getNegativeBody(), r1Head);
-    DefaultRuleWithNegation r1 =
+    RuleWithNegation srcBis =
+        new RuleWithNegation(src.getLabel(), src.getBody(), src.getNegativeBody(), r1Head);
+    RuleWithNegation r1 =
         createImageOf(srcBis, DefaultUnifierAlgorithm.getSourceVariablesSubstitution());
-    DefaultRuleWithNegation r2 =
+    RuleWithNegation r2 =
         createImageOf(dest, DefaultUnifierAlgorithm.getTargetVariablesSubstitution());
 
     try (CloseableIteratorWithoutException<Substitution> sigmas =
@@ -97,8 +96,7 @@ class DefaultUnifierWithNegationAlgorithm {
     return false;
   }
 
-  private boolean isValidPositiveUnifier(DefaultRuleWithNegation r1, DefaultRuleWithNegation r2,
-      Substitution s) {
+  private boolean isValidPositiveUnifier(RuleWithNegation r1, RuleWithNegation r2, Substitution s) {
 
     /* Application substitution */
     InMemoryAtomSet bpi = s.createImageOf(r1.getBody());
@@ -162,8 +160,7 @@ class DefaultUnifierWithNegationAlgorithm {
     return (i && ii && iii && iv && v && vi && vii);
   }
 
-  private boolean isValidNegativeUnifier(DefaultRuleWithNegation r1, DefaultRuleWithNegation r2,
-      Substitution s) {
+  private boolean isValidNegativeUnifier(RuleWithNegation r1, RuleWithNegation r2, Substitution s) {
 
     /* Application substitution */
     InMemoryAtomSet bpi = s.createImageOf(r1.getBody());
@@ -192,8 +189,8 @@ class DefaultUnifierWithNegationAlgorithm {
     return (!inter);
   }
 
-  private DefaultRuleWithNegation createImageOf(DefaultRuleWithNegation rule, Substitution s) {
-    return new DefaultRuleWithNegation(rule.getLabel(), s.createImageOf(rule.getBody()),
+  private RuleWithNegation createImageOf(RuleWithNegation rule, Substitution s) {
+    return new RuleWithNegation(rule.getLabel(), s.createImageOf(rule.getBody()),
         s.createImageOf(rule.getNegativeBody()), s.createImageOf(rule.getHead()));
   }
 }

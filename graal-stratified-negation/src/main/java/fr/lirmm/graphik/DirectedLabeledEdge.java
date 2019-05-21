@@ -2,13 +2,13 @@ package fr.lirmm.graphik;
 
 import fr.lirmm.graphik.util.graph.DirectedEdge;
 
-class DefaultDirectedLabeledEdge implements DirectedEdge {
+class DirectedLabeledEdge implements DirectedEdge {
 
   private final int tail_;
   private final int head_;
   private final char label_;
 
-  public DefaultDirectedLabeledEdge(int tail, int head, char label) {
+  public DirectedLabeledEdge(int tail, int head, char label) {
     tail_ = tail;
     head_ = head;
     label_ = label;

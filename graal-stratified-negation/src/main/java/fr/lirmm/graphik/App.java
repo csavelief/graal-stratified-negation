@@ -1,6 +1,7 @@
 package fr.lirmm.graphik;
 
 import java.io.File;
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.errorprone.annotations.Var;
@@ -57,8 +58,8 @@ public class App {
     } else {
 
       // init GRD
-      DefaultLabeledGraphOfRuleDependencies grd =
-          new DefaultLabeledGraphOfRuleDependencies(new File(options.input_filepath));
+      LabeledGraphOfRuleDependencies grd =
+          new LabeledGraphOfRuleDependencies(new File(options.input_filepath));
 
       if (options.print_ruleset) {
         String s = Utils.getRulesText(grd.getRules());

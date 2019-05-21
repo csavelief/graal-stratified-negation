@@ -3,7 +3,9 @@ package fr.lirmm.graphik;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
+
 import com.google.errorprone.annotations.Var;
+
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.api.core.Rule;
@@ -49,7 +51,7 @@ class IndexedByBodyPredicateRuleSetWithNegation extends LinkedListRuleSet {
       }
     }
     try (CloseableIteratorWithoutException<Atom> it =
-        ((DefaultRuleWithNegation) rule).getNegativeBody().iterator()) {
+        ((RuleWithNegation) rule).getNegativeBody().iterator()) {
       while (it.hasNext()) {
         add(it.next().getPredicate(), rule);
       }
