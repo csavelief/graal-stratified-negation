@@ -1,5 +1,6 @@
 package fr.lirmm.graphik;
 
+import com.google.common.base.Preconditions;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Predicate;
@@ -16,17 +17,10 @@ class RuleWithNegation extends DefaultRule {
 
     super(label, positiveBody, head);
 
-    negativeBody_ = negativeBody;
-    indice_ = Integer.parseInt(getLabel());
-  }
+    Preconditions.checkNotNull(negativeBody, "negativeBody is null");
 
-  /**
-   * Get the negative body (the hypothesis) of this rule.
-   *
-   * @return the body of this rule.
-   */
-  public InMemoryAtomSet negativeBody() {
-    return negativeBody_;
+    negativeBody_ = negativeBody;
+    indice_ = Integer.parseInt(getLabel(), 10);
   }
 
   @Override
@@ -37,42 +31,54 @@ class RuleWithNegation extends DefaultRule {
   }
 
   @Override
-  public void appendTo(StringBuilder builder) {
+  public void appendTo(StringBuilder sb) {
+
+    Preconditions.checkNotNull(sb, "sb is null");
 
     if (!getLabel().isEmpty()) {
-      builder.append('[');
-      builder.append(getLabel());
-      builder.append("] ");
+      sb.append('[');
+      sb.append(getLabel());
+      sb.append("] ");
     }
 
-    builder.append("[");
+    sb.append("[");
 
     // Positive body
-    for (Predicate p : getBody().getPredicates()) {
-      try (CloseableIteratorWithoutException<Atom> itAtom = getBody().atomsByPredicate(p)) {
-        while (itAtom.hasNext()) {
-          Atom a = itAtom.next();
-          builder.append(a.toString());
-          builder.append(" , ");
+    for (Predicate predicate : getBody().getPredicates()) {
+      try (CloseableIteratorWithoutException<Atom> it = getBody().atomsByPredicate(predicate)) {
+        while (it.hasNext()) {
+          Atom atom = it.next();
+          sb.append(atom.toString());
+          sb.append(" , ");
         }
       }
     }
 
-    builder.replace(builder.length() - 2, builder.length(), "");
+    sb.replace(sb.length() - 2, sb.length(), "");
 
     // Negative body
-    for (Predicate p : negativeBody().getPredicates()) {
-      try (CloseableIteratorWithoutException<Atom> itAtom = negativeBody().atomsByPredicate(p)) {
-        while (itAtom.hasNext()) {
-          Atom a = itAtom.next();
-          builder.append(" , !");
-          builder.append(a.toString());
+    for (Predicate predicate : negativeBody().getPredicates()) {
+      try (
+          CloseableIteratorWithoutException<Atom> it = negativeBody().atomsByPredicate(predicate)) {
+        while (it.hasNext()) {
+          Atom atom = it.next();
+          sb.append(" , !");
+          sb.append(atom.toString());
         }
       }
     }
 
-    builder.append("] -> ");
-    builder.append(getHead());
+    sb.append("] -> ");
+    sb.append(getHead());
+  }
+
+  /**
+   * Get the negative body (the hypothesis) of this rule.
+   *
+   * @return the body of this rule.
+   */
+  public InMemoryAtomSet negativeBody() {
+    return negativeBody_;
   }
 
   public int indice() {
