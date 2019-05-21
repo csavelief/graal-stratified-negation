@@ -1,12 +1,14 @@
 package fr.lirmm.graphik;
 
 import com.google.common.base.Preconditions;
+import com.google.errorprone.annotations.CheckReturnValue;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Predicate;
 import fr.lirmm.graphik.graal.core.DefaultRule;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
+@CheckReturnValue
 class RuleWithNegation extends DefaultRule {
 
   private final InMemoryAtomSet negativeBody_;

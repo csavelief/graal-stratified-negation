@@ -1,68 +1,69 @@
 package fr.lirmm.graphik;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.cycle.TarjanSimpleCycles;
 import org.jgrapht.graph.DefaultDirectedGraph;
-
+import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-
 import fr.lirmm.graphik.graal.api.core.GraphOfRuleDependencies;
 import fr.lirmm.graphik.graal.api.core.Rule;
 import fr.lirmm.graphik.graal.api.core.Substitution;
 import fr.lirmm.graphik.graal.kb.KBBuilder;
 import fr.lirmm.graphik.util.graph.scc.StronglyConnectedComponentsGraph;
 
+@CheckReturnValue
 class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
   private final DirectedGraph<Rule, DirectedLabeledEdge> graph_;
   private final Iterable<Rule> rules_;
 
-  private boolean computeCircuits_;
+  private boolean computeCircuits_ = false;
   private List<List<Rule>> circuits_;
-  private boolean computeScc_;
+
+  private boolean computeScc_ = false;
   private StronglyConnectedComponentsGraph<Rule> scc_;
 
   public LabeledGraphOfRuleDependencies(File src) {
-    this(readRules(src), true);
+    this(readRules(src));
   }
 
-  private LabeledGraphOfRuleDependencies(Iterable<Rule> rules, boolean computeDep) {
+  private LabeledGraphOfRuleDependencies(Iterable<Rule> rules) {
+
+    Preconditions.checkNotNull(rules, "rules is null");
 
     graph_ = new DefaultDirectedGraph<>(DirectedLabeledEdge.class);
     rules_ = rules;
 
-    for (Rule r : rules) {
-      graph_.addVertex(r);
+    for (Rule rule : rules_) {
+      graph_.addVertex(rule);
     }
 
-    if (computeDep) {
-      computeDependencies();
-      computeCircuits_ = false;
-      hasCircuit();
-      computeScc_ = false;
-      scc_ = getStronglyConnectedComponentsGraph();
-    }
+    computeDependencies();
+    hasCircuit();
+    scc_ = getStronglyConnectedComponentsGraph();
   }
 
-  private static Iterable<Rule> readRules(File src) {
+  static private Iterable<Rule> readRules(File file) {
+
+    Preconditions.checkNotNull(file, "file is null");
+    Preconditions.checkArgument(file.exists(), "file does not exist");
 
     KBBuilder kbb = new KBBuilder();
 
     try (BufferedReader br =
-        new BufferedReader(new InputStreamReader(new FileInputStream(src), UTF_8))) {
+        new BufferedReader(new InputStreamReader(new FileInputStream(file), UTF_8))) {
 
       @Var
       String row;
@@ -78,45 +79,13 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     return kbb.build().getOntology();
   }
 
-  private void computeDependencies() {
-
-    RulesIndex index =
-        new RulesIndex(rules_);
-    int cores = Runtime.getRuntime().availableProcessors();
-    ArrayList<ArrayList<Rule>> l = new ArrayList<>();
-
-    for (int i = 0; i < cores; i++) {
-      l.add(new ArrayList<>());
-    }
-
-    @Var
-    int k = 0;
-    for (Rule rule : rules_) {
-      l.get(k).add(rule);
-      k = (k + 1) % cores;
-    }
-
-    try {
-
-      List<ThreadDependency> threads = new ArrayList<>();
-
-      for (int i = 0; i < cores; i++) {
-        ThreadDependency thread = new ThreadDependency(l.get(i), index, graph_);
-        threads.add(thread);
-        thread.start();
-      }
-
-      for (int i = 0; i < cores; i++) {
-        threads.get(i).join();
-      }
-    } catch (InterruptedException e) {
-      Throwables.getRootCause(e).printStackTrace();
-    }
-  }
-
   @Override
   public boolean existUnifier(Rule src, Rule dest) {
-    return (graph_.getEdge(src, dest) != null);
+
+    Preconditions.checkNotNull(src, "src is null");
+    Preconditions.checkNotNull(dest, "dest is null");
+
+    return graph_.getEdge(src, dest) != null;
   }
 
   @Override
@@ -126,20 +95,14 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
   @Override
   public Set<Rule> getTriggeredRules(Rule src) {
-    Set<Rule> set = new HashSet<>();
-    for (DirectedLabeledEdge i : graph_.outgoingEdgesOf(src)) {
-      if (i.getLabel() == '+') {
-        set.add(graph_.getEdgeTarget(i));
-      }
-    }
-    return set;
-  }
 
-  public Set<Rule> getInhibitedRules(Rule src) {
+    Preconditions.checkNotNull(src, "src is null");
+
     Set<Rule> set = new HashSet<>();
-    for (DirectedLabeledEdge i : graph_.outgoingEdgesOf(src)) {
-      if (i.getLabel() == '-') {
-        set.add(graph_.getEdgeTarget(i));
+
+    for (DirectedLabeledEdge edge : graph_.outgoingEdgesOf(src)) {
+      if (edge.getLabel() == '+') {
+        set.add(graph_.getEdgeTarget(edge));
       }
     }
     return set;
@@ -151,26 +114,21 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
   }
 
   @Override
-  public GraphOfRuleDependencies getSubGraph(Iterable<Rule> ruleSet) {
+  public GraphOfRuleDependencies getSubGraph(Iterable<Rule> rules) {
 
-    LabeledGraphOfRuleDependencies subGRD = new LabeledGraphOfRuleDependencies(ruleSet, false);
+    Preconditions.checkNotNull(rules, "rules is null");
 
-    for (Rule src : ruleSet) {
-      for (Rule target : ruleSet) {
-        if (graph_.getEdge(src, target) != null) {
-          subGRD.addDependency(src, target, graph_.getEdge(src, target).getLabel());
+    LabeledGraphOfRuleDependencies subGrd = new LabeledGraphOfRuleDependencies(rules);
+
+    for (Rule src : rules) {
+      for (Rule target : rules) {
+        DirectedLabeledEdge edge = graph_.getEdge(src, target);
+        if (edge != null) {
+          subGrd.addDependency((RuleWithNegation) src, (RuleWithNegation) target, edge.getLabel());
         }
       }
     }
-
-    hasCircuit();
-    getStronglyConnectedComponentsGraph();
-    return subGRD;
-  }
-
-  private void addDependency(Rule src, Rule target, char label) {
-    graph_.addEdge(src, target, new DirectedLabeledEdge(((RuleWithNegation) src).indice(),
-        ((RuleWithNegation) target).indice(), label));
+    return subGrd;
   }
 
   @Override
@@ -187,14 +145,38 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     return scc_;
   }
 
+  @CanIgnoreReturnValue
   @Override
   public boolean hasCircuit() {
     if (!computeCircuits_) {
-      TarjanSimpleCycles<Rule, DirectedLabeledEdge> inspector = new TarjanSimpleCycles<>(graph_);
-      circuits_ = inspector.findSimpleCycles();
+      circuits_ = new TarjanSimpleCycles<>(graph_).findSimpleCycles();
       computeCircuits_ = true;
     }
     return !circuits_.isEmpty();
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("Rules :\n");
+    for (Rule rule : rules_) {
+      sb.append(rule.toString());
+    }
+    sb.append("\n");
+    return sb.append(graph_.toString()).toString();
+  }
+
+  public Set<Rule> getInhibitedRules(Rule src) {
+
+    Preconditions.checkNotNull(src, "src is null");
+
+    Set<Rule> set = new HashSet<>();
+
+    for (DirectedLabeledEdge edge : graph_.outgoingEdgesOf(src)) {
+      if (edge.getLabel() == '-') {
+        set.add(graph_.getEdgeTarget(edge));
+      }
+    }
+    return set;
   }
 
   public boolean hasCircuitWithNegativeEdge() {
@@ -214,13 +196,45 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     return false;
   }
 
-  private boolean containsNegativeEdge(List<Rule> circuit) {
-    for (int i = 0; i < circuit.size() - 1; i++) { // Following the circuit
-      for (DirectedLabeledEdge e : graph_.outgoingEdgesOf(circuit.get(i))) {
+  private void computeDependencies() {
 
-        // Wanted edge found
-        if (e.getHead() == ((RuleWithNegation) circuit.get(i + 1)).indice()) {
-          if (e.getLabel() == '-') {
+    UnifierWithNegationAlgorithm unifier = UnifierWithNegationAlgorithm.instance();
+    RulesIndex index = new RulesIndex(rules_);
+
+    for (Rule rule : rules_) {
+
+      RuleWithNegation goal = (RuleWithNegation) rule;
+      Iterable<RuleWithNegation> subGoals =
+          (Iterable<RuleWithNegation>) (Iterable<?>) index.rules(rule.getHead().getPredicates());
+
+      for (RuleWithNegation subGoal : subGoals) {
+        if (!graph_.containsEdge(rule, subGoal)) {
+
+          // Negative Dependency
+          if (unifier.existNegativeDependency(goal, subGoal)) {
+            graph_.addEdge(goal, subGoal,
+                new DirectedLabeledEdge(goal.indice(), subGoal.indice(), '-'));
+          }
+          // Positive Dependency
+          else if (unifier.existPositiveDependency(goal, subGoal)) {
+            graph_.addEdge(goal, subGoal,
+                new DirectedLabeledEdge(goal.indice(), subGoal.indice(), '+'));
+          } else {
+            // ERROR
+          }
+        }
+      }
+    }
+  }
+
+  private boolean containsNegativeEdge(List<Rule> circuit) {
+
+    Preconditions.checkNotNull(circuit, "circuit is null");
+
+    for (int i = 0; i < circuit.size() - 1; i++) {
+      for (DirectedLabeledEdge edge : graph_.outgoingEdgesOf(circuit.get(i))) {
+        if (edge.getHead() == ((RuleWithNegation) circuit.get(i + 1)).indice()) {
+          if (edge.getLabel() == '-') {
             return true;
           }
           break;
@@ -230,11 +244,9 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
 
     int i = circuit.size() - 1;
 
-    for (DirectedLabeledEdge e : graph_.outgoingEdgesOf(circuit.get(i))) {
-
-      // Wanted edge found
-      if (e.getHead() == ((RuleWithNegation) circuit.get(0)).indice()) {
-        if (e.getLabel() == '-') {
+    for (DirectedLabeledEdge edge : graph_.outgoingEdgesOf(circuit.get(i))) {
+      if (edge.getHead() == ((RuleWithNegation) circuit.get(0)).indice()) {
+        if (edge.getLabel() == '-') {
           return true;
         }
         break;
@@ -243,60 +255,11 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     return false;
   }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder("Rules :\n");
-    for (Rule r : rules_) {
-      sb.append(r.toString());
-    }
-    sb.append("\n");
-    return sb.append(graph_.toString()).toString();
-  }
+  private void addDependency(RuleWithNegation src, RuleWithNegation target, char label) {
 
-  static class ThreadDependency extends Thread {
+    Preconditions.checkNotNull(src, "src is null");
+    Preconditions.checkNotNull(target, "target is null");
 
-    private final ArrayList<Rule> src_;
-    private final RulesIndex index_;
-    private final DirectedGraph<Rule, DirectedLabeledEdge> graph_;
-
-    public ThreadDependency(ArrayList<Rule> src, RulesIndex index,
-        DirectedGraph<Rule, DirectedLabeledEdge> graph) {
-      src_ = src;
-      index_ = index;
-      graph_ = graph;
-    }
-
-    @Override
-    public void run() {
-      for (Rule r1 : src_) {
-        Iterable<Rule> candidates = index_.rules(r1.getHead().getPredicates());
-        if (candidates != null) {
-          for (Rule r2 : candidates) {
-            synchronized (graph_) {
-              if (!graph_.containsEdge(r1, r2)) {
-
-                // Negative Dependency
-                if (UnifierWithNegationAlgorithm.instance()
-                    .existNegativeDependency((RuleWithNegation) r1, (RuleWithNegation) r2)) {
-                  addEdge(r1, r2, '-');
-                }
-                // Positive Dependency
-                else if (UnifierWithNegationAlgorithm.instance()
-                    .existPositiveDependency((RuleWithNegation) r1, (RuleWithNegation) r2)) {
-                  addEdge(r1, r2, '+');
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    private void addEdge(Rule r1, Rule r2, char label) {
-      synchronized (graph_) {
-        graph_.addEdge(r1, r2, new DirectedLabeledEdge(((RuleWithNegation) r1).indice(),
-            ((RuleWithNegation) r2).indice(), label));
-      }
-    }
+    graph_.addEdge(src, target, new DirectedLabeledEdge(src.indice(), target.indice(), label));
   }
 }

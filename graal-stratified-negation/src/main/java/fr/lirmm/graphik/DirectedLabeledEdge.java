@@ -1,7 +1,10 @@
 package fr.lirmm.graphik;
 
+import com.google.errorprone.annotations.CheckReturnValue;
+
 import fr.lirmm.graphik.util.graph.DirectedEdge;
 
+@CheckReturnValue
 class DirectedLabeledEdge implements DirectedEdge {
 
   private final int tail_;

@@ -1,14 +1,12 @@
 package fr.lirmm.graphik;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-
 import com.google.common.base.Throwables;
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSet;
 import fr.lirmm.graphik.graal.api.core.Predicate;
@@ -25,6 +23,7 @@ import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
+@CheckReturnValue
 class Utils {
 
   private static int i = -1;
@@ -57,7 +56,7 @@ class Utils {
     return new RuleWithNegation(i + "", posBody, negBody, r.getHead());
   }
 
-  public static KBBuilder readKB(KBBuilder kbb, String fileRules, String fileFacts) {
+  public static void fillKb(KBBuilder kbb, String fileRules, String fileFacts) {
 
     // Parsing Rules
     if (fileRules != null) {
@@ -100,7 +99,6 @@ class Utils {
         Throwables.getRootCause(e).printStackTrace();
       }
     }
-    return kbb;
   }
 
   public static String displayFacts(AtomSet facts) {
@@ -119,7 +117,7 @@ class Utils {
   public static String getSaturationFromFile(String src, LabeledGraphOfRuleDependencies grd) {
 
     KBBuilder kbb = new KBBuilder();
-    Utils.readKB(kbb, null, src);
+    Utils.fillKb(kbb, null, src);
     KnowledgeBase kb = kbb.build();
     SccChase<AtomSet> chase = new SccChase<>(grd, kb.getFacts());
 

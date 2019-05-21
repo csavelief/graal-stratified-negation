@@ -1,8 +1,8 @@
 package fr.lirmm.graphik;
 
 import com.google.common.base.Throwables;
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
-
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.InMemoryAtomSet;
 import fr.lirmm.graphik.graal.api.core.Substitution;
@@ -15,6 +15,7 @@ import fr.lirmm.graphik.util.stream.CloseableIterator;
 import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
+@CheckReturnValue
 class UnifierWithNegationAlgorithm {
 
   private static UnifierWithNegationAlgorithm instance_;
