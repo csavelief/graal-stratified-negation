@@ -64,7 +64,7 @@ class DefaultLabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
       String row;
 
       while ((row = br.readLine()) != null) {
-        if (row.charAt(0) != '%') {
+        if (row.length() > 0 && row.charAt(0) != '%') {
           kbb.add(Utils.parseRule(row));
         }
       }

@@ -68,7 +68,7 @@ class Utils {
         String row;
 
         while ((row = br.readLine()) != null) {
-          if (row.charAt(0) != '%') {
+          if (row.length() > 0 && row.charAt(0) != '%') {
             kbb.add(parseRule(row));
           }
         }
@@ -89,7 +89,7 @@ class Utils {
         String row;
 
         while ((row = br.readLine()) != null) {
-          if (row.charAt(0) != '%') {
+          if (row.length() > 0 && row.charAt(0) != '%') {
             kbb.add(DlgpParser.parseAtom(row));
           }
         }
