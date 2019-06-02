@@ -1,7 +1,6 @@
 package fr.lirmm.graphik;
 
 import java.io.File;
-
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.errorprone.annotations.Var;
@@ -55,40 +54,34 @@ public class App {
     if (options.input_filepath.compareTo("-") == 0) {
       System.out.println("Error, you need a Rule Base or at least launch the GUI");
       System.exit(0);
+    }
+
+    LabeledGraphOfRuleDependencies grd =
+        new LabeledGraphOfRuleDependencies(new File(options.input_filepath));
+
+    if (options.print_ruleset) {
+      System.out.println(Utils.getRulesText(grd.getRules()));
+    }
+
+    if (options.print_grd) {
+      System.out.println(Utils.getGrdText(grd));
+    }
+
+    if (options.print_scc) {
+      System.out.println(Utils.getSccText(grd.getStronglyConnectedComponentsGraph()));
+    }
+
+    System.out.print("===== ANALYSIS : ");
+
+    if (!grd.hasCircuitWithNegativeEdge()) {
+
+      System.out.println("STRATIFIABLE =====");
+
+      if (options.facts_filepath.compareTo("-") != 0) {
+        System.out.println(Utils.getSaturationFromFile(options.facts_filepath, grd));
+      }
     } else {
-
-      // init GRD
-      LabeledGraphOfRuleDependencies grd =
-          new LabeledGraphOfRuleDependencies(new File(options.input_filepath));
-
-      if (options.print_ruleset) {
-        String s = Utils.getRulesText(grd.getRules());
-        System.out.println(s);
-      }
-
-      if (options.print_grd) {
-        String s = Utils.getGRDText(grd);
-        System.out.println(s);
-      }
-
-      if (options.print_scc) {
-        String s = Utils.getSCCText(grd.getStronglyConnectedComponentsGraph());
-        System.out.println(s);
-      }
-
-      System.out.print("===== ANALYSIS : ");
-
-      if (!grd.hasCircuitWithNegativeEdge()) {
-
-        System.out.println("STRATIFIABLE =====");
-
-        if (options.facts_filepath.compareTo("-") != 0) {
-          String s = Utils.getSaturationFromFile(options.facts_filepath, grd);
-          System.out.println(s);
-        }
-      } else {
-        System.out.println("NOT STRATITIFABLE =====");
-      }
+      System.out.println("NOT STRATITIFABLE =====");
     }
   }
 

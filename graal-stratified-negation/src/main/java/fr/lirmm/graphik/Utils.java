@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Var;
@@ -26,37 +27,44 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 @CheckReturnValue
 class Utils {
 
-  private static int i = -1;
+  private static int i_ = -1;
 
-  public static RuleWithNegation parseRule(String s) throws ParseException {
+  public static RuleWithNegation parseRule(String string) throws ParseException {
+
+    Preconditions.checkNotNull(string, "string is null");
 
     LinkedListAtomSet posBody = new LinkedListAtomSet();
     LinkedListAtomSet negBody = new LinkedListAtomSet();
 
-    Rule r = DlgpParser.parseRule(s);
+    Rule rule = DlgpParser.parseRule(string);
 
-    i++;
+    i_++;
 
-    for (Predicate itPred : r.getBody().getPredicates()) {
-      try (CloseableIteratorWithoutException<Atom> itAtom = r.getBody().atomsByPredicate(itPred)) {
-        for (; itAtom.hasNext();) {
-          Atom a = itAtom.next();
-          if (!a.getPredicate().toString().startsWith("not_")) {
-            posBody.add(a);
+    for (Predicate predicate : rule.getBody().getPredicates()) {
+      try (CloseableIteratorWithoutException<Atom> iterator =
+          rule.getBody().atomsByPredicate(predicate)) {
+
+        while (iterator.hasNext()) {
+
+          Atom atom = iterator.next();
+          Predicate pred = atom.getPredicate();
+
+          if (!pred.toString().startsWith("not_")) {
+            posBody.add(atom);
           } else {
-            Predicate p =
-                new Predicate(a.getPredicate().getIdentifier().toString().replaceAll("not_", ""),
-                    a.getPredicate().getArity());
-            a.setPredicate(p);
-            negBody.add(a);
+            atom.setPredicate(new Predicate(pred.getIdentifier().toString().replaceAll("not_", ""),
+                pred.getArity()));
+            negBody.add(atom);
           }
         }
       }
     }
-    return new RuleWithNegation(i + "", posBody, negBody, r.getHead());
+    return new RuleWithNegation(Integer.toString(i_, 10), posBody, negBody, rule.getHead());
   }
 
-  public static void fillKb(KBBuilder kbb, String fileRules, String fileFacts) {
+  private static void fillKb(KBBuilder kbb, String fileRules, String fileFacts) {
+
+    Preconditions.checkNotNull(kbb, "kbb is null");
 
     // Parsing Rules
     if (fileRules != null) {
@@ -101,11 +109,15 @@ class Utils {
     }
   }
 
-  public static String displayFacts(AtomSet facts) {
+  private static String displayFacts(AtomSet facts) {
+
+    Preconditions.checkNotNull(facts, "facts is null");
+
     StringBuilder sb = new StringBuilder("== Saturation ==\n");
-    try (CloseableIterator<Atom> itAtom = facts.iterator()) {
-      while (itAtom.hasNext()) {
-        sb.append(itAtom.next().toString());
+
+    try (CloseableIterator<Atom> iterator = facts.iterator()) {
+      while (iterator.hasNext()) {
+        sb.append(iterator.next().toString());
         sb.append(".\n");
       }
     } catch (IteratorException e) {
@@ -115,6 +127,9 @@ class Utils {
   }
 
   public static String getSaturationFromFile(String src, LabeledGraphOfRuleDependencies grd) {
+
+    Preconditions.checkNotNull(src, "src is null");
+    Preconditions.checkNotNull(grd, "grd is null");
 
     KBBuilder kbb = new KBBuilder();
     Utils.fillKb(kbb, null, src);
@@ -130,27 +145,35 @@ class Utils {
   }
 
   public static String getRulesText(Iterable<Rule> rules) {
+
+    Preconditions.checkNotNull(rules, "rules is null");
+
     StringBuilder sb = new StringBuilder("====== RULE SET ======\n");
-    for (Rule r : rules) {
-      sb.append(r.toString());
+
+    for (Rule rule : rules) {
+      sb.append(rule.toString());
       sb.append('\n');
     }
     return sb.toString();
   }
 
-  public static String getGRDText(LabeledGraphOfRuleDependencies grd) {
+  public static String getGrdText(LabeledGraphOfRuleDependencies grd) {
+
+    Preconditions.checkNotNull(grd, "grd is null");
+
     StringBuilder sb = new StringBuilder("======== GRD =========\n");
-    for (Rule r1 : grd.getRules()) {
-      for (Rule r2 : grd.getTriggeredRules(r1)) {
+
+    for (Rule rule1 : grd.getRules()) {
+      for (Rule rule2 : grd.getTriggeredRules(rule1)) {
         sb.append("[");
-        sb.append(r1.getLabel());
+        sb.append(rule1.getLabel());
         sb.append("] ={+}=> [");
-        sb.append(r2.getLabel());
+        sb.append(rule2.getLabel());
         sb.append("]\n");
       }
-      for (Rule r2 : grd.getInhibitedRules(r1)) {
+      for (Rule r2 : grd.getInhibitedRules(rule1)) {
         sb.append("[");
-        sb.append(r1.getLabel());
+        sb.append(rule1.getLabel());
         sb.append("] ={-}=> [");
         sb.append(r2.getLabel());
         sb.append("]\n");
@@ -159,21 +182,28 @@ class Utils {
     return sb.toString();
   }
 
-  public static String getSCCText(StronglyConnectedComponentsGraph<Rule> scc) {
+  public static String getSccText(StronglyConnectedComponentsGraph<Rule> scc) {
+
+    Preconditions.checkNotNull(scc, "scc is null");
+
     StringBuilder sb = new StringBuilder("======== SCC =========\n");
+
     for (int i = 0; i < scc.getNbrComponents(); i++) {
+
       @Var
       boolean first = true;
+
       sb.append("C");
       sb.append(i);
       sb.append(" = {");
-      for (Rule r : scc.getComponent(i)) {
+
+      for (Rule rule : scc.getComponent(i)) {
         if (first) {
           first = false;
         } else {
           sb.append(", ");
         }
-        sb.append(r.getLabel());
+        sb.append(rule.getLabel());
       }
       sb.append("}\n");
     }
