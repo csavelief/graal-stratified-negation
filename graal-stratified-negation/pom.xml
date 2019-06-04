@@ -12,6 +12,12 @@
     <name>fr.lirmm.graphik:graal-stratified-negation</name>
     <packaging>jar</packaging>
 
+    <developers>
+        <developer>
+            <name>Arthur BOIXEL</name>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.8</jdk.version>
@@ -61,22 +67,22 @@
         <dependency>
             <groupId>fr.lirmm.graphik</groupId>
             <artifactId>graal-kb</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>fr.lirmm.graphik</groupId>
             <artifactId>graal-io-dlgp</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>fr.lirmm.graphik</groupId>
             <artifactId>graal-rules-analyser</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>fr.lirmm.graphik</groupId>
             <artifactId>graal-forward-chaining</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

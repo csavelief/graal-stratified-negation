@@ -88,5 +88,4 @@ public class App {
   private static void printVersion() {
     System.out.println(PROGRAM_NAME + " version " + VERSION);
   }
-
 }
