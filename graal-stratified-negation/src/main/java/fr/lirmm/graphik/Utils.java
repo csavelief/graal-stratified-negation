@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.atomic.AtomicInteger;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.errorprone.annotations.CheckReturnValue;
@@ -27,7 +28,7 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 @CheckReturnValue
 class Utils {
 
-  private static int i_ = -1;
+  private static AtomicInteger i_ = new AtomicInteger(-1);
 
   public static RuleWithNegation parseRule(String string) throws ParseException {
 
@@ -37,8 +38,6 @@ class Utils {
     LinkedListAtomSet negBody = new LinkedListAtomSet();
 
     Rule rule = DlgpParser.parseRule(string);
-
-    i_++;
 
     for (Predicate predicate : rule.getBody().getPredicates()) {
       try (CloseableIteratorWithoutException<Atom> iterator =
@@ -59,7 +58,8 @@ class Utils {
         }
       }
     }
-    return new RuleWithNegation(Integer.toString(i_, 10), posBody, negBody, rule.getHead());
+    return new RuleWithNegation(Integer.toString(i_.incrementAndGet(), 10), posBody, negBody,
+        rule.getHead());
   }
 
   private static void fillKb(KBBuilder kbb, String fileRules, String fileFacts) {

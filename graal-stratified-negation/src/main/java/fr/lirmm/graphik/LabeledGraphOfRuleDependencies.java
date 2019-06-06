@@ -39,7 +39,7 @@ class LabeledGraphOfRuleDependencies implements GraphOfRuleDependencies {
     this(readRules(src));
   }
 
-  private LabeledGraphOfRuleDependencies(Iterable<Rule> rules) {
+  protected LabeledGraphOfRuleDependencies(Iterable<Rule> rules) {
 
     Preconditions.checkNotNull(rules, "rules is null");
 

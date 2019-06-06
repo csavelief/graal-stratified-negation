@@ -88,6 +88,7 @@
 
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${basedir}/src/main/test</testSourceDirectory>
         <plugins>
 
             <!-- Compile project using Google Error-Prone -->
