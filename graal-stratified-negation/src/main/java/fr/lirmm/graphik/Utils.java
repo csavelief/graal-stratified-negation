@@ -134,7 +134,7 @@ class Utils {
     KBBuilder kbb = new KBBuilder();
     Utils.fillKb(kbb, null, src);
     KnowledgeBase kb = kbb.build();
-    SccChase<AtomSet> chase = new SccChase<>(grd, kb.getFacts());
+    SccChase<AtomSet> chase = new SccChase<>(grd, kb.getFacts(), new RuleApplierWithNegation<>());
 
     try {
       chase.execute();
